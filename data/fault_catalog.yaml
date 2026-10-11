@@ -1,0 +1,93 @@
+# MyGarage Fault Catalog
+# Defines all available faults that can be injected into the system
+
+faults:
+  - fault_id: "F001"
+    component_id: "battery_12v"
+    fault_name: "discharged_battery"
+    description: "Battery is deeply discharged due to lights left on or age"
+    root_cause: "Insufficient charge in battery cells"
+    symptoms:
+      - "Car won't start"
+      - "Clicking sound when trying to start"
+      - "Dim or flickering dashboard lights"
+      - "No crank"
+    difficulty: "easy"
+    points: 100
+    
+  - fault_id: "F002"
+    component_id: "battery_12v"
+    fault_name: "failed_cell"
+    description: "One or more battery cells have failed internally"
+    root_cause: "Internal cell short or open circuit"
+    symptoms:
+      - "Engine cranks slowly"
+      - "Battery won't hold charge"
+      - "Voltage drops quickly under load"
+      - "Battery is less than 2 years old but fails"
+    difficulty: "medium"
+    points: 150
+    
+  - fault_id: "F003"
+    component_id: "battery_12v"
+    fault_name: "corroded_terminal"
+    description: "Battery terminal corrosion causing high resistance connection"
+    root_cause: "Oxidation and corrosion at battery terminals"
+    symptoms:
+      - "Intermittent starting problems"
+      - "Clicking sound sometimes"
+      - "White or greenish powder on battery terminals"
+      - "Loose connection feeling"
+    difficulty: "easy"
+    points: 80
+    
+  - fault_id: "F004"
+    component_id: "starter_motor"
+    fault_name: "failed_solenoid"
+    description: "Starter solenoid is not engaging the starter drive"
+    root_cause: "Failed solenoid coil or contacts"
+    symptoms:
+      - "Single loud click when turning key"
+      - "No cranking sound"
+      - "All lights and accessories work normally"
+      - "Starter doesn't engage"
+    difficulty: "medium"
+    points: 120
+    
+  - fault_id: "F005"
+    component_id: "starter_motor"
+    fault_name: "worn_starter"
+    description: "Starter motor brushes worn causing weak performance"
+    root_cause: "Worn brushes or damaged commutator"
+    symptoms:
+      - "Engine cranks very slowly"
+      - "Grinding or whining noise"
+      - "High current draw"
+      - "Intermittent operation"
+    difficulty: "medium"
+    points: 130
+    
+  - fault_id: "F006"
+    component_id: "starter_motor"
+    fault_name: "failed_starter"
+    description: "Starter motor has completely failed"
+    root_cause: "Open or shorted armature windings"
+    symptoms:
+      - "No cranking at all"
+      - "No sound when turning key"
+      - "Battery and all accessories work fine"
+    difficulty: "medium"
+    points: 110
+    
+  - fault_id: "F007"
+    component_id: "starter_motor"
+    fault_name: "bad_ground"
+    description: "Poor ground connection from engine to chassis or starter"
+    root_cause: "Corroded or loose ground strap"
+    symptoms:
+      - "Intermittent no-start"
+      - "Clicking sounds"
+      - "Lights dim significantly when cranking"
+      - "Sometimes starts, sometimes doesn't"
+    difficulty: "hard"
+    points: 180

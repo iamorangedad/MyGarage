@@ -1,0 +1,129 @@
+faults:
+  - id: F001
+    name: "电瓶亏电 (Dead Battery)"
+    component: battery
+    description: "Battery discharged below minimum voltage, cannot provide sufficient current for starting"
+    symptoms: "车辆无法启动,起动机无反应或只有微弱的咔哒声 (Car won't start, starter has no response or only weak clicking)"
+    difficulty: easy
+    parameters:
+      voltage: 11.5
+      max_current: 50
+    observables:
+      resting_voltage: 11.5
+      loaded_voltage: 8.0
+      cranking_current: 50
+    repair_cost: 120.0
+    repair_time: 0.5
+    
+  - id: F002
+    name: "电瓶单格损坏 (Bad Cell)"
+    component: battery
+    description: "One cell in the battery has failed, causing rapid voltage drop under load"
+    symptoms: "启动无力,电压迅速下降,有时能打着有时打不着 (Weak starting, voltage drops rapidly, intermittent starting)"
+    difficulty: medium
+    parameters:
+      voltage: 12.6
+      bad_cell: true
+      voltage_drop_rate: 0.3
+    observables:
+      resting_voltage: 12.6
+      loaded_voltage: 8.5
+      rapid_drop: true
+    repair_cost: 120.0
+    repair_time: 0.5
+    
+  - id: F003
+    name: "电瓶桩头腐蚀 (Corroded Terminal)"
+    component: battery
+    description: "Battery terminal corroded or loose, causing high resistance connection"
+    symptoms: "间歇性无法启动,有时有咔哒声,有时正常 (Intermittent starting issues, sometimes clicking, sometimes normal)"
+    difficulty: easy
+    parameters:
+      resistance: 0.5
+      corrosion_visible: true
+    observables:
+      resting_voltage: 12.6
+      terminal_voltage_drop: 0.8
+      visual_corrosion: true
+    repair_cost: 5.0
+    repair_time: 0.2
+    
+  - id: F004
+    name: "接地线松动 (Loose Ground)"
+    component: battery
+    description: "Ground strap connection loose or corroded"
+    symptoms: "启动无力或无反应,电压正常但无法启动 (Weak or no starting, voltage normal but won't crank)"
+    difficulty: medium
+    parameters:
+      ground_resistance: 0.8
+    observables:
+      resting_voltage: 12.6
+      ground_voltage_drop: 0.9
+      loaded_voltage: 10.0
+    repair_cost: 10.0
+    repair_time: 0.3
+    
+  - id: F005
+    name: "起动机电磁开关故障 (Failed Starter Solenoid)"
+    component: starter
+    description: "Starter solenoid clicks but doesn't engage the motor"
+    symptoms: "只听到咔哒声,起动机不转 (Only clicking sound, starter doesn't spin)"
+    difficulty: medium
+    parameters:
+      solenoid_failed: true
+      click_sound: true
+    observables:
+      click_sound: true
+      no_rotation: true
+      voltage_normal: true
+    repair_cost: 180.0
+    repair_time: 1.5
+    
+  - id: F006
+    name: "起动机磨损 (Worn Starter Motor)"
+    component: starter
+    description: "Starter motor brushes worn, causing high resistance and low torque"
+    symptoms: "起动缓慢,有异响,吱吱声或研磨声 (Slow cranking, abnormal noise, squealing or grinding)"
+    difficulty: medium
+    parameters:
+      worn_brushes: true
+      high_resistance: true
+      current: 250
+      torque_factor: 0.5
+    observables:
+      high_current: true
+      slow_cranking: true
+      noise: true
+    repair_cost: 200.0
+    repair_time: 2.0
+    
+  - id: F007
+    name: "保险丝熔断 (Blown Fuse)"
+    component: starter
+    description: "Starter circuit fuse has blown"
+    symptoms: "完全无反应,没有声音,没有动作 (Complete no response, no sound, no action)"
+    difficulty: easy
+    parameters:
+      fuse_blown: true
+    observables:
+      no_power: true
+      fuse_continuity: false
+      voltage_before_fuse: 12.6
+      voltage_after_fuse: 0.0
+    repair_cost: 2.0
+    repair_time: 0.1
+    
+  - id: F008
+    name: "继电器失效 (Failed Relay)"
+    component: starter
+    description: "Starter relay contacts failed"
+    symptoms: "无反应或只有继电器咔哒声 (No response or only relay clicking)"
+    difficulty: medium
+    parameters:
+      relay_failed: true
+    observables:
+      relay_click: true
+      no_starter_power: true
+      control_signal_ok: true
+    repair_cost: 25.0
+    repair_time: 0.3

@@ -1,0 +1,73 @@
+<mujoco model="garage_scene">
+  <compiler angle="degree" coordinate="local"/>
+  
+  <option timestep="0.01" gravity="0 0 -9.81"/>
+  
+  <asset>
+    <!-- Materials for visual appearance -->
+    <material name="floor" rgba="0.5 0.5 0.5 1"/>
+    <material name="car_body" rgba="0.8 0.1 0.1 1"/>
+    <material name="battery" rgba="0.2 0.2 0.3 1"/>
+    <material name="starter" rgba="0.6 0.6 0.6 1"/>
+    <material name="engine" rgba="0.3 0.3 0.3 1"/>
+  </asset>
+  
+  <worldbody>
+    <!-- Lighting -->
+    <light directional="true" diffuse="0.6 0.6 0.6" specular="0.2 0.2 0.2" pos="0 0 4" dir="0 0 -1"/>
+    <light directional="true" diffuse="0.4 0.4 0.4" pos="-2 -2 3" dir="1 1 -1"/>
+    
+    <!-- Floor -->
+    <geom name="floor" type="plane" size="10 10 0.1" material="floor" friction="1 0.005 0.0001"/>
+    
+    <!-- Car body (simplified) -->
+    <body name="car_body" pos="0 0 0.4">
+      <geom name="car_chassis" type="box" size="1.8 0.8 0.3" material="car_body" mass="800"/>
+      
+      <!-- Engine compartment -->
+      <body name="engine_compartment" pos="1.2 0 0.2">
+        <!-- Engine block (simplified) -->
+        <body name="engine_block" pos="0 0 0">
+          <geom name="engine" type="cylinder" size="0.15 0.3" material="engine" mass="150" 
+                euler="90 0 0"/>
+          
+          <!-- Crankshaft (rotates when starter engages) -->
+          <body name="crankshaft" pos="0 0 0">
+            <joint name="crank_joint" type="hinge" axis="0 1 0" damping="10" limited="false"/>
+            <geom name="crank_visual" type="cylinder" size="0.05 0.15" rgba="0.1 0.1 0.1 1" 
+                  euler="90 0 0"/>
+          </body>
+        </body>
+        
+        <!-- Battery -->
+        <body name="battery_body" pos="-0.3 0.3 0">
+          <geom name="battery_case" type="box" size="0.1 0.08 0.12" material="battery" mass="15"/>
+          <!-- Battery terminals -->
+          <geom name="battery_pos_terminal" type="cylinder" size="0.015 0.02" pos="0.05 0 0.12" 
+                rgba="1 0 0 1"/>
+          <geom name="battery_neg_terminal" type="cylinder" size="0.015 0.02" pos="-0.05 0 0.12" 
+                rgba="0 0 0 1"/>
+        </body>
+        
+        <!-- Starter motor -->
+        <body name="starter_body" pos="0.15 -0.15 -0.1">
+          <geom name="starter_case" type="cylinder" size="0.06 0.15" material="starter" mass="4" 
+                euler="90 0 0"/>
+          <geom name="starter_solenoid" type="box" size="0.04 0.04 0.06" pos="0 0 0.1" 
+                rgba="0.4 0.4 0.5 1"/>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+  
+  <actuator>
+    <!-- Starter motor torque on crankshaft -->
+    <motor name="starter_motor" joint="crank_joint" gear="1" ctrllimited="true" ctrlrange="0 5"/>
+  </actuator>
+  
+  <sensor>
+    <!-- Crankshaft rotation sensor -->
+    <jointvel name="crank_rpm" joint="crank_joint"/>
+    <jointpos name="crank_pos" joint="crank_joint"/>
+  </sensor>
+</mujoco>

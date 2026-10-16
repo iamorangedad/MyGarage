@@ -13,6 +13,7 @@ MyGarage is a game-like simulator where players practice car diagnosis and repai
 3. Combustion: a successful crank starts the engine only when the run circuit, crankshaft sensor, fuel pressure, and spark are good enough. A weak plug, coil, pump, or injector starts and then misfires.
 4. Cooling: coolant temperature approaches a target set by the thermostat, pump, radiator, fan, and the indicated temperature from the coolant sensor.
 5. Chassis: pad thickness, disc runout, wheel-speed codes, and shock bounce are diagnostic-only.
+6. Intake and exhaust: fuel trim, idle speed, MAF, MAP, both oxygen sensors, catalyst efficiency, EGR, and the PCV valve. Unmetered air (gasket, open PCV) raises trim. Metered extra air (dirty throttle) raises idle without that trim. A lying MAF disagrees with the MAP estimate.
 
 ## Core Principles
 

@@ -279,7 +279,10 @@ class TestScene:
     def test_scene_loads_new_parts_headless(self):
         sim = MuJoCoSimulation(headless=True)
         assert sim.is_loaded()
-        for body_name in ('ground_strap_body', 'alternator_body', 'radiator_body', 'wheel_corner'):
+        for body_name in (
+            'ground_strap_body', 'alternator_body', 'radiator_body', 'wheel_corner',
+            'air_filter_body', 'catalyst_body',
+        ):
             assert sim.model.body(body_name).id >= 0
         sim.step(10)
         sim.close()

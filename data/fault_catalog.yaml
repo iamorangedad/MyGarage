@@ -553,3 +553,191 @@ faults:
       - "Nose dive under braking"
     difficulty: "easy"
     points: 90
+
+  # --- Intake and exhaust ---
+  - fault_id: "F049"
+    component_id: "air_filter"
+    fault_name: "clogged_filter"
+    description: "Air filter is clogged"
+    root_cause: "Dirty air filter element"
+    symptoms:
+      - "Loss of power"
+      - "Fuel trims stay near zero at idle"
+    difficulty: "easy"
+    points: 80
+
+  - fault_id: "F050"
+    component_id: "throttle_body"
+    fault_name: "carbon_buildup"
+    description: "Carbon holds the throttle plate open at idle"
+    root_cause: "Carbon deposits on the throttle plate"
+    symptoms:
+      - "High idle"
+      - "Fuel trim stays near normal"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F051"
+    component_id: "throttle_body"
+    fault_name: "stuck_closed"
+    description: "Throttle plate sticks shut"
+    root_cause: "Gummed throttle plate"
+    symptoms:
+      - "Idle drops and the engine wants to stall"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F052"
+    component_id: "intake_gasket"
+    fault_name: "vacuum_leak"
+    description: "Intake gasket leaks unmetered air"
+    root_cause: "Split intake manifold gasket"
+    symptoms:
+      - "High idle"
+      - "Positive fuel trim"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F053"
+    component_id: "maf_sensor"
+    fault_name: "under_reading"
+    description: "MAF sensor under-reports airflow"
+    root_cause: "Contaminated MAF element"
+    symptoms:
+      - "Positive fuel trim"
+      - "Rough idle"
+    difficulty: "medium"
+    points: 150
+
+  - fault_id: "F054"
+    component_id: "maf_sensor"
+    fault_name: "over_reading"
+    description: "MAF sensor over-reports airflow"
+    root_cause: "MAF sensor out of calibration"
+    symptoms:
+      - "Negative fuel trim"
+      - "Rich exhaust"
+    difficulty: "medium"
+    points: 150
+
+  - fault_id: "F055"
+    component_id: "map_sensor"
+    fault_name: "reads_high"
+    description: "MAP sensor reads high at idle"
+    root_cause: "MAP sensor biased high"
+    symptoms:
+      - "Negative fuel trim"
+      - "Vacuum gauge does not agree with the sensor"
+    difficulty: "hard"
+    points: 160
+
+  - fault_id: "F056"
+    component_id: "map_sensor"
+    fault_name: "open_circuit"
+    description: "MAP sensor circuit is open"
+    root_cause: "Open MAP sensor circuit"
+    symptoms:
+      - "No manifold pressure reading"
+      - "Rough idle"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F057"
+    component_id: "o2_sensor_upstream"
+    fault_name: "lazy_sensor"
+    description: "Upstream oxygen sensor responds slowly"
+    root_cause: "Aged upstream O2 sensor"
+    symptoms:
+      - "Slow O2 response"
+      - "Idle can sound normal"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F058"
+    component_id: "o2_sensor_upstream"
+    fault_name: "stuck_lean"
+    description: "Upstream oxygen sensor is stuck lean"
+    root_cause: "Failed upstream O2 sensor"
+    symptoms:
+      - "O2 voltage stays low"
+      - "No rich/lean switching"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F059"
+    component_id: "o2_sensor_downstream"
+    fault_name: "stuck_sensor"
+    description: "Downstream oxygen sensor does not respond"
+    root_cause: "Failed downstream O2 sensor"
+    symptoms:
+      - "Downstream O2 does not move"
+      - "Catalyst efficiency is still high"
+    difficulty: "hard"
+    points: 160
+
+  - fault_id: "F060"
+    component_id: "catalytic_converter"
+    fault_name: "inefficient"
+    description: "Catalytic converter is no longer storing oxygen"
+    root_cause: "Degraded catalyst"
+    symptoms:
+      - "P0420"
+      - "Downstream O2 switches with the upstream sensor"
+      - "Idle sounds normal"
+    difficulty: "medium"
+    points: 150
+
+  - fault_id: "F061"
+    component_id: "catalytic_converter"
+    fault_name: "clogged"
+    description: "Catalytic converter is restricted"
+    root_cause: "Broken catalyst substrate"
+    symptoms:
+      - "Loss of power"
+      - "High exhaust backpressure"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F062"
+    component_id: "egr_valve"
+    fault_name: "stuck_open"
+    description: "EGR valve is stuck open at idle"
+    root_cause: "EGR pintle stuck off its seat"
+    symptoms:
+      - "Rough idle"
+      - "Stall coming to a stop"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F063"
+    component_id: "egr_valve"
+    fault_name: "stuck_closed"
+    description: "EGR valve does not open when commanded"
+    root_cause: "EGR pintle stuck shut"
+    symptoms:
+      - "Idle sounds normal"
+      - "No EGR flow on a command test"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F064"
+    component_id: "pcv_valve"
+    fault_name: "stuck_open"
+    description: "PCV valve is stuck open"
+    root_cause: "PCV valve stuck open"
+    symptoms:
+      - "Slightly high idle"
+      - "Moderate positive fuel trim"
+    difficulty: "medium"
+    points: 120
+
+  - fault_id: "F065"
+    component_id: "pcv_valve"
+    fault_name: "stuck_closed"
+    description: "PCV valve is stuck closed"
+    root_cause: "PCV valve gummed shut"
+    symptoms:
+      - "Idle sounds normal"
+      - "Oil mist around the valve cover"
+    difficulty: "easy"
+    points: 90

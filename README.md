@@ -229,6 +229,7 @@ The playable car covers five subsystems. See `docs/parts_catalog.md` for the ful
 - **Combustion**: spark plug, ignition coil, fuel injector, fuel pump, crankshaft position sensor
 - **Cooling**: thermostat, water pump, cooling fan, coolant temperature sensor, radiator
 - **Chassis**: brake pads, brake disc, wheel speed sensor, shock absorber
+- **Intake and exhaust**: air filter, throttle body, intake gasket, MAF, MAP, upstream and downstream O2, catalytic converter, EGR valve, PCV valve
 
 ### License
 
@@ -461,6 +462,7 @@ pytest -v
 - **燃烧**：火花塞、点火线圈、喷油器、燃油泵、曲轴位置传感器
 - **冷却**：节温器、水泵、冷却风扇、水温传感器、散热器
 - **底盘**：制动片、制动盘、轮速传感器、减振器
+- **进气与排气**：空气滤清器、节气门、进气歧管垫、空气流量计、进气压力传感器、前后氧传感器、三元催化器、EGR 阀、PCV 阀
 
 ### 许可证
 

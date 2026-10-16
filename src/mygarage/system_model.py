@@ -39,6 +39,19 @@ class SystemModel:
             'starter_control_voltage': 0.0,
             'misfire': False,
             'idle_quality': 'off',
+            'fuel_trim_pct': 0.0,
+            'manifold_pressure_kpa': 100.0,
+            'map_reported_kpa': 100.0,
+            'maf_reported_gps': 0.0,
+            'maf_actual_gps': 0.0,
+            'o2_upstream_v': None,
+            'o2_switching': False,
+            'o2_downstream_v': None,
+            'o2_downstream_switching': False,
+            'catalyst_efficiency': None,
+            'power_pct': 0.0,
+            'backpressure_kpa': 0.0,
+            'egr_flow_at_idle': False,
         }
 
     def _initialize_default_components(self):
@@ -170,15 +183,24 @@ class SystemModel:
         self.state['idle_quality'] = combustion['idle_quality'] if started else 'off'
         self.state['misfire'] = bool(combustion['misfire']) if started else False
         result['started'] = started
-        result['misfire'] = self.state['misfire']
-        result['idle_quality'] = self.state['idle_quality']
-        result['idle_rpm'] = self.state['engine_rpm']
         if not result.get('success'):
             result['description'] = result.get('reason', 'Engine did not crank')
         elif not started:
             result['description'] = 'Engine cranks but does not start. ' + combustion['reason']
         else:
-            result['description'] = combustion['reason']
+            mixture = self._mixture()
+            if combustion['misfire']:
+                result['description'] = combustion['reason']
+            elif mixture['reasons']:
+                self.state['engine_rpm'] = mixture['rpm']
+                self.state['misfire'] = bool(mixture['misfire'])
+                self.state['idle_quality'] = mixture['quality'] or combustion['idle_quality']
+                result['description'] = 'Engine starts. ' + '; '.join(mixture['reasons'])
+            else:
+                result['description'] = combustion['reason']
+        result['misfire'] = self.state['misfire']
+        result['idle_quality'] = self.state['idle_quality']
+        result['idle_rpm'] = self.state['engine_rpm']
         self._refresh_signals()
         return result
 
@@ -271,6 +293,19 @@ class SystemModel:
             'idle_quality': self.state['idle_quality'],
             'misfire': self.state['misfire'],
             'ground_drop_v': round(self._ground_drop(), 2) if self.state['engine_cranking'] else 0.0,
+            'fuel_trim_pct': self.state['fuel_trim_pct'],
+            'manifold_pressure_kpa': self.state['manifold_pressure_kpa'],
+            'map_reported_kpa': self.state['map_reported_kpa'],
+            'maf_reported_gps': self.state['maf_reported_gps'],
+            'maf_actual_gps': self.state['maf_actual_gps'],
+            'o2_upstream_v': self.state['o2_upstream_v'],
+            'o2_switching': self.state['o2_switching'],
+            'o2_downstream_v': self.state['o2_downstream_v'],
+            'o2_downstream_switching': self.state['o2_downstream_switching'],
+            'catalyst_efficiency': self.state['catalyst_efficiency'],
+            'power_pct': self.state['power_pct'],
+            'backpressure_kpa': self.state['backpressure_kpa'],
+            'egr_flow_at_idle': self.state['egr_flow_at_idle'],
         }
 
     def step(self, dt: float = 0.01):
@@ -425,6 +460,180 @@ class SystemModel:
         temp = float(self.state['coolant_temp_c'])
         self.state['coolant_temp_c'] = temp + (target - temp) * rate * dt
 
+    def _mixture(self) -> Dict[str, Any]:
+        """Idle air, fuel trim, and what the intake and exhaust sensors report.
+
+        A healthy running engine sits at 750 rpm, 35 kPa, about 3.5 g/s, and
+        zero fuel trim. Unmetered leaks move trim positive. A lying MAF or MAP
+        moves trim without the same vacuum-gauge reading.
+        """
+        if not self.state['engine_running']:
+            reported_map = 100.0
+            map_sensor = self.get_component('map_sensor')
+            if map_sensor and map_sensor.parameters.get('mode') == 'open':
+                reported_map = None
+            return {
+                'rpm': 0,
+                'quality': None,
+                'misfire': False,
+                'reasons': [],
+                'fuel_trim_pct': 0.0,
+                'manifold_pressure_kpa': 100.0,
+                'map_reported_kpa': reported_map,
+                'maf_reported_gps': 0.0,
+                'maf_actual_gps': 0.0,
+                'o2_upstream_v': None,
+                'o2_switching': False,
+                'o2_downstream_v': None,
+                'o2_downstream_switching': False,
+                'catalyst_efficiency': None,
+                'power_pct': 0.0,
+                'backpressure_kpa': 0.0,
+                'egr_flow_at_idle': False,
+            }
+
+        actual_map = 35.0
+        actual_maf = 3.5
+        trim = 0.0
+        rpm_add = 0
+        quality = None
+        misfire = False
+        reasons = []
+        power = 100.0
+
+        air_filter = self.get_component('air_filter')
+        if air_filter and air_filter.parameters['restriction'] > 0.5:
+            actual_maf -= 0.7
+            power -= 45
+            reasons.append('air filter is restricting airflow')
+
+        throttle = self.get_component('throttle_body')
+        idle_air = throttle.parameters['idle_air'] if throttle else 'normal'
+        if idle_air == 'high':
+            rpm_add += 260
+            actual_map += 8
+            actual_maf += 0.8
+            quality = 'high'
+            reasons.append('throttle plate is open at idle, and that air is still metered')
+        elif idle_air == 'low':
+            rpm_add -= 280
+            actual_maf -= 0.7
+            quality = 'low'
+            reasons.append('throttle plate is stuck and idle air is too low')
+
+        gasket = self.get_component('intake_gasket')
+        pcv = self.get_component('pcv_valve')
+        if gasket and gasket.parameters['leak']:
+            actual_map += 22
+            rpm_add += 320
+            trim += 28
+            quality = 'high'
+            reasons.append('intake gasket is leaking unmetered air')
+        if pcv and pcv.parameters['stuck_open']:
+            actual_map += 10
+            rpm_add += 140
+            trim += 12
+            quality = quality or 'high'
+            reasons.append('PCV valve is stuck open')
+
+        egr = self.get_component('egr_valve')
+        egr_flow = bool(egr and egr.parameters['stuck_open'])
+        if egr_flow:
+            actual_map += 12
+            rpm_add -= 140
+            trim += 8
+            misfire = True
+            quality = 'rough'
+            reasons.append('EGR valve is stuck open at idle')
+
+        maf = self.get_component('maf_sensor')
+        scale = float(maf.parameters['scale']) if maf else 1.0
+        if scale < 0.8:
+            trim += 25
+            quality = 'rough'
+            reasons.append('MAF reports less air than the engine is using')
+        elif scale > 1.2:
+            trim -= 20
+            quality = 'rough'
+            reasons.append('MAF reports more air than the engine is using')
+
+        map_sensor = self.get_component('map_sensor')
+        mode = map_sensor.parameters['mode'] if map_sensor else 'normal'
+        if mode == 'open':
+            reported_map = None
+            quality = 'rough'
+            reasons.append('MAP sensor circuit is open')
+        elif mode == 'high':
+            reported_map = 95.0
+            trim -= 22
+            quality = 'rough'
+            reasons.append('MAP sensor reads high at idle')
+        else:
+            reported_map = round(actual_map, 1)
+
+        o2 = self.get_component('o2_sensor_upstream')
+        response = o2.parameters['response'] if o2 else 'normal'
+        if response == 'stuck_lean':
+            o2_voltage = 0.05
+            o2_switching = False
+            trim += 18
+            reasons.append('upstream O2 sensor is stuck lean')
+        elif response == 'lazy':
+            o2_voltage = 0.45
+            o2_switching = False
+            reasons.append('upstream O2 sensor is slow to respond')
+        else:
+            o2_voltage = 0.45
+            o2_switching = True
+
+        catalyst = self.get_component('catalytic_converter')
+        efficiency = float(catalyst.parameters['efficiency']) if catalyst else 0.96
+        clogged = bool(catalyst and catalyst.parameters['clogged'])
+        backpressure = 3.0
+        if clogged:
+            backpressure = 32.0
+            power -= 55
+            rpm_add -= 80
+            reasons.append('catalytic converter is restricted')
+        inefficient = efficiency < 0.6
+        if inefficient:
+            reasons.append('catalytic converter is not storing oxygen')
+
+        downstream = self.get_component('o2_sensor_downstream')
+        downstream_stuck = bool(downstream and downstream.parameters['stuck'])
+        if inefficient and not downstream_stuck:
+            downstream_voltage = o2_voltage
+            downstream_switching = o2_switching
+        elif downstream_stuck:
+            downstream_voltage = 0.45
+            downstream_switching = False
+            reasons.append('downstream O2 sensor is not responding')
+        else:
+            downstream_voltage = 0.72
+            downstream_switching = False
+
+        rpm = min(1300, max(450, 750 + rpm_add))
+        trim = min(40.0, max(-35.0, trim))
+        return {
+            'rpm': rpm,
+            'quality': quality,
+            'misfire': misfire,
+            'reasons': reasons,
+            'fuel_trim_pct': round(trim, 1),
+            'manifold_pressure_kpa': round(actual_map, 1),
+            'map_reported_kpa': None if reported_map is None else round(float(reported_map), 1),
+            'maf_reported_gps': round(actual_maf * scale, 2),
+            'maf_actual_gps': round(actual_maf, 2),
+            'o2_upstream_v': o2_voltage,
+            'o2_switching': o2_switching,
+            'o2_downstream_v': downstream_voltage,
+            'o2_downstream_switching': downstream_switching,
+            'catalyst_efficiency': round(efficiency, 2),
+            'power_pct': max(0.0, power),
+            'backpressure_kpa': backpressure,
+            'egr_flow_at_idle': egr_flow,
+        }
+
     def _refresh_signals(self):
         self.state['starter_control_voltage'] = self._starter_control_voltage()
         self.state['fuel_pressure_psi'] = self._fuel_pressure()
@@ -432,3 +641,20 @@ class SystemModel:
         temp_c = float(self.state['coolant_temp_c'])
         self.state['fan_commanded'] = self._fan_commanded(temp_c)
         self.state['fan_on'] = self._fan_on(temp_c)
+        mixture = self._mixture()
+        for key in (
+            'fuel_trim_pct',
+            'manifold_pressure_kpa',
+            'map_reported_kpa',
+            'maf_reported_gps',
+            'maf_actual_gps',
+            'o2_upstream_v',
+            'o2_switching',
+            'o2_downstream_v',
+            'o2_downstream_switching',
+            'catalyst_efficiency',
+            'power_pct',
+            'backpressure_kpa',
+            'egr_flow_at_idle',
+        ):
+            self.state[key] = mixture[key]

@@ -49,6 +49,31 @@ class DiagnosticTools:
                 'timestamp': self._get_simulation_time(),
             }
 
+        if tool_name == 'live_data' and component_id in ('all', 'vehicle', 'engine'):
+            return {
+                'tool': tool_name,
+                'component': component_id,
+                'readings': {
+                    'engine_running': context.get('engine_running'),
+                    'rpm': context.get('engine_rpm'),
+                    'idle_quality': context.get('idle_quality'),
+                    'fuel_trim_pct': context.get('fuel_trim_pct'),
+                    'maf_reported_gps': context.get('maf_reported_gps'),
+                    'maf_from_map_gps': context.get('maf_actual_gps'),
+                    'map_reported_kpa': context.get('map_reported_kpa'),
+                    'vacuum_gauge_kpa': context.get('manifold_pressure_kpa'),
+                    'o2_upstream_v': context.get('o2_upstream_v'),
+                    'o2_switching': context.get('o2_switching'),
+                    'o2_downstream_v': context.get('o2_downstream_v'),
+                    'o2_downstream_switching': context.get('o2_downstream_switching'),
+                    'catalyst_efficiency': context.get('catalyst_efficiency'),
+                    'power_pct': context.get('power_pct'),
+                    'backpressure_kpa': context.get('backpressure_kpa'),
+                    'note': None if context.get('engine_running') else 'Engine is not running',
+                },
+                'timestamp': self._get_simulation_time(),
+            }
+
         if tool_name == 'obd' and component_id in ('all', 'vehicle', 'obd'):
             codes = []
             for part in self.system.get_all_components():
@@ -134,6 +159,10 @@ class DiagnosticTools:
             'voltage_drop': 'Voltage drop - Measure a connection while cranking',
             'spark_test': 'Spark test - Coil output and plug condition',
             'bounce_test': 'Bounce test - How many times the corner oscillates',
+            'live_data': 'Live data - RPM, fuel trim, MAF, MAP, and O2 while running',
+            'smoke_test': 'Smoke test - Look for an intake leak',
+            'egr_test': 'EGR test - Flow at idle, and flow when the valve is commanded',
+            'rattle_test': 'Rattle test - Shake a PCV valve',
         }
     
     def get_usage_stats(self) -> Dict[str, int]:

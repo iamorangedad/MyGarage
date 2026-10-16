@@ -27,6 +27,18 @@ from mygarage.components.cooling import (
     Thermostat,
     WaterPump,
 )
+from mygarage.components.intake_exhaust import (
+    AirFilter,
+    CatalyticConverter,
+    DownstreamO2Sensor,
+    EGRValve,
+    IntakeGasket,
+    ManifoldPressureSensor,
+    MassAirflowSensor,
+    PCVValve,
+    ThrottleBody,
+    UpstreamO2Sensor,
+)
 from mygarage.components.starter_motor import StarterMotor
 from mygarage.components.starting import (
     GroundStrap,
@@ -36,8 +48,8 @@ from mygarage.components.starting import (
     StarterSolenoid,
 )
 
-# Order matches the build sequence: starting circuit, charging, combustion,
-# cooling, then chassis.
+# Order matches the build sequence: starting, charging, combustion, cooling,
+# chassis, then intake and exhaust.
 COMPONENT_CLASSES = [
     Battery,
     StarterMotor,
@@ -63,6 +75,16 @@ COMPONENT_CLASSES = [
     BrakeDisc,
     WheelSpeedSensor,
     ShockAbsorber,
+    AirFilter,
+    ThrottleBody,
+    IntakeGasket,
+    MassAirflowSensor,
+    ManifoldPressureSensor,
+    UpstreamO2Sensor,
+    DownstreamO2Sensor,
+    CatalyticConverter,
+    EGRValve,
+    PCVValve,
 ]
 
 

@@ -32,6 +32,10 @@ def print_menu():
     print("  14. Submit diagnosis")
     print("  15. Show components")
     print("  16. Service manual (fault names for a part)")
+    print("  17. Live data (engine running)")
+    print("  18. Smoke test")
+    print("  19. EGR test")
+    print("  20. PCV rattle test")
     print("  0. Quit")
     print()
 
@@ -207,6 +211,22 @@ def interactive_mode(game: Game):
                     print(f"\nKnown faults for {comp}:")
                     for fault in manual['faults']:
                         print(f"  - {fault['name']}: {fault['description']}")
+
+        elif choice == '17':
+            print("\nLive data:")
+            show_result(game.perform_diagnostic('live_data', 'all'))
+
+        elif choice == '18':
+            print("\nSmoke test:")
+            show_result(game.perform_diagnostic('smoke_test', 'intake_gasket'))
+
+        elif choice == '19':
+            print("\nEGR test:")
+            show_result(game.perform_diagnostic('egr_test', 'egr_valve'))
+
+        elif choice == '20':
+            print("\nPCV rattle test:")
+            show_result(game.perform_diagnostic('rattle_test', 'pcv_valve'))
 
         else:
             print("Invalid choice. Try again.")

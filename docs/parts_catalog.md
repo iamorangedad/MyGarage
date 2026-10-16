@@ -7,13 +7,14 @@
 - **已实现**：当前代码里已有组件和故障
 - **规划**：清单里列出，尚未做成组件
 
-下面五批已经做成组件，并且写进了故障目录。表里标成「已实现」的都可以在游戏里测量、更换和提交诊断。其余仍是规划。
+下面六批已经做成组件，并且写进了故障目录。表里标成「已实现」的都可以在游戏里测量、更换和提交诊断。其余仍是规划。
 
 1. 起动电路：搭铁带、点火开关、起动继电器、起动熔断丝、电磁开关（另有蓄电池和起动机）
 2. 充电：发电机、皮带、电压调节器
 3. 着车与缺火：火花塞、点火线圈、喷油器、燃油泵、曲轴位置传感器
 4. 过热：节温器、水泵、冷却风扇、水温传感器、散热器
 5. 制动与底盘：制动片、制动盘、轮速传感器、减振器
+6. 进气与排气：空气滤清器、节气门、进气歧管垫、空气流量传感器、进气压力传感器、前后氧传感器、三元催化器、EGR 阀、PCV 阀
 
 ---
 
@@ -82,22 +83,22 @@
 
 | 中文 | English | 建议 ID | 状态 | 作用 |
 | --- | --- | --- | --- | --- |
-| 空气滤清器 | Air filter | `air_filter` | 规划 | 过滤进气 |
-| 节气门体 | Throttle body | `throttle_body` | 规划 | 控制进气量 |
+| 空气滤清器 | Air filter | `air_filter` | 已实现 | 过滤进气 |
+| 节气门体 | Throttle body | `throttle_body` | 已实现 | 控制进气量 |
 | 怠速控制阀 | Idle air control valve | `iac_valve` | 规划 | 调节怠速空气（老车） |
 | 进气歧管 | Intake manifold | `intake_manifold` | 规划 | 把空气分配到各缸 |
-| 进气歧管垫 | Intake manifold gasket | `intake_gasket` | 规划 | 密封进气，漏气会导致怠速不稳 |
-| 质量空气流量传感器 | MAF sensor | `maf_sensor` | 规划 | 测量进气质量 |
-| 进气压力传感器 | MAP sensor | `map_sensor` | 规划 | 测量进气歧管压力 |
+| 进气歧管垫 | Intake manifold gasket | `intake_gasket` | 已实现 | 密封进气，漏气会导致怠速不稳 |
+| 质量空气流量传感器 | MAF sensor | `maf_sensor` | 已实现 | 测量进气质量 |
+| 进气压力传感器 | MAP sensor | `map_sensor` | 已实现 | 测量进气歧管压力 |
 | 进气温度传感器 | IAT sensor | `iat_sensor` | 规划 | 测量进气温度 |
 | 节气门位置传感器 | TPS | `tps_sensor` | 规划 | 测量油门开度 |
 | 排气歧管 | Exhaust manifold | `exhaust_manifold` | 规划 | 汇集各缸废气 |
-| 氧传感器（前） | Upstream O2 sensor | `o2_sensor_upstream` | 规划 | 反馈空燃比，供闭环喷油 |
-| 氧传感器（后） | Downstream O2 sensor | `o2_sensor_downstream` | 规划 | 监测三元催化效率 |
-| 三元催化器 | Catalytic converter | `catalytic_converter` | 规划 | 转化 CO、HC、NOx |
+| 氧传感器（前） | Upstream O2 sensor | `o2_sensor_upstream` | 已实现 | 反馈空燃比，供闭环喷油 |
+| 氧传感器（后） | Downstream O2 sensor | `o2_sensor_downstream` | 已实现 | 监测三元催化效率 |
+| 三元催化器 | Catalytic converter | `catalytic_converter` | 已实现 | 转化 CO、HC、NOx |
 | 排气管 / 消声器 | Exhaust pipe / muffler | `muffler` | 规划 | 导出并降低排气噪声 |
-| EGR 阀 | EGR valve | `egr_valve` | 规划 | 引入废气降低燃烧温度 |
-| PCV 阀 | PCV valve | `pcv_valve` | 规划 | 把曲轴箱蒸气导入进气 |
+| EGR 阀 | EGR valve | `egr_valve` | 已实现 | 引入废气降低燃烧温度 |
+| PCV 阀 | PCV valve | `pcv_valve` | 已实现 | 把曲轴箱蒸气导入进气 |
 
 ## 6. 冷却系统 / Cooling
 
@@ -241,6 +242,6 @@
 
 ## 已按这个顺序实现
 
-上面五批已经接进系统模型：起动电路决定能不能转起来，充电电压只在发动机运转后升高，燃油/点火/曲轴信号决定能不能着车，冷却零件决定水温往哪个平衡点走，制动和减振器只出现在各自的测量里。
+上面六批已经接进系统模型：起动电路决定能不能转起来，充电电压只在发动机运转后升高，燃油/点火/曲轴信号决定能不能着车，冷却零件决定水温往哪个平衡点走，制动和减振器只出现在各自的测量里，进气和排气决定怠速、燃油修正和氧传感器读数。
 
 再加零件仍然是：新组件模块 + `data/fault_catalog.yaml` 里的故障条目，并把它放进 `components/__init__.py` 的 `COMPONENT_CLASSES`。

@@ -35,7 +35,11 @@ class MuJoCoSimulation:
     def _load_model(self):
         """Load the MuJoCo model from MJCF file."""
         try:
-            self.model = mujoco.MjModel.from_xml_path(self.model_path)
+            if self.model_path == self._get_default_model_path():
+                from mygarage.fasteners.scene import load_garage_xml
+                self.model = mujoco.MjModel.from_xml_string(load_garage_xml())
+            else:
+                self.model = mujoco.MjModel.from_xml_path(self.model_path)
             self.data = mujoco.MjData(self.model)
         except Exception as e:
             print(f"Warning: Could not load MuJoCo model from {self.model_path}: {e}")
@@ -102,6 +106,26 @@ class MuJoCoSimulation:
                 print(f"Warning: Sensor '{name}' not found")
         return None
     
+    def set_joint_qpos(self, name: str, value: float):
+        """Pose one joint and clear its velocity. The fastener model is the source of truth."""
+        if not (self.model and self.data):
+            return
+        joint = self.model.joint(name)
+        self.data.qpos[int(joint.qposadr[0])] = value
+        self.data.qvel[int(joint.dofadr[0])] = 0.0
+
+    def forward(self):
+        """Update body positions from the current joint coordinates."""
+        if self.model and self.data:
+            mujoco.mj_forward(self.model, self.data)
+
+    def joint_qpos(self, name: str) -> Optional[float]:
+        """Current position of a named joint."""
+        if not (self.model and self.data):
+            return None
+        joint = self.model.joint(name)
+        return float(self.data.qpos[int(joint.qposadr[0])])
+
     def reset(self):
         """Reset the simulation to initial state."""
         if self.model and self.data:

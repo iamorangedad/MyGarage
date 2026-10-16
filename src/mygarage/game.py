@@ -6,6 +6,7 @@ from mygarage.fault_engine import FaultEngine
 from mygarage.diagnostic_tools import DiagnosticTools
 from mygarage.scoring import ScoringSystem, GameScore
 from mygarage.simulation import MuJoCoSimulation
+from mygarage.fasteners.engine import build_engine
 
 
 class Game:
@@ -21,12 +22,16 @@ class Game:
         self.diagnostic_tools = DiagnosticTools(self.system_model)
         self.scoring_system = ScoringSystem()
         
+        # Structural model: the engine is a head clamped to a block by nuts.
+        self.engine = build_engine()
+
         # Try to initialize simulation
         self.simulation: Optional[MuJoCoSimulation] = None
         try:
             self.simulation = MuJoCoSimulation(headless=headless)
         except Exception as e:
             print(f"Warning: MuJoCo simulation not available: {e}")
+        self._sync_fasteners()
         
         # Game state
         self.active_scenario = False
@@ -42,12 +47,15 @@ class Game:
         """
         # Reset everything
         self.system_model.reset()
+        self.engine.seat_all()
+        self.system_model.state['head_clamped'] = self.engine.member_secured('cylinder_head')
         self.diagnostic_tools.reset_usage_stats()
         self.parts_replaced.clear()
         self.diagnosis_submitted = False
         
         if self.simulation:
             self.simulation.reset()
+            self._sync_fasteners()
         
         # Select and inject a random fault
         fault = self.fault_engine.select_random_fault(difficulty=self.difficulty)
@@ -201,11 +209,48 @@ class Game:
             'charging_voltage': self.system_model.state['charging_voltage'],
         }
 
+    def list_fasteners(self) -> Dict[str, Any]:
+        """Nut positions, and whether the head is still clamped."""
+        return {
+            'assembly': self.engine.assembly_id,
+            'fasteners': self.engine.status(),
+            'head_clamped': self.engine.member_secured('cylinder_head'),
+            'head_gap_mm': round(self.engine.clamp_gap('cylinder_head') * 1000.0, 3),
+        }
+
+    def turn_fastener(self, nut_id: str, turns: float) -> Dict[str, Any]:
+        """Turn a nut. Positive tightens it onto the bolt; negative backs it off."""
+        try:
+            joint = self.engine.turn(nut_id, turns)
+        except KeyError as exc:
+            return {'error': str(exc)}
+        self.system_model.state['head_clamped'] = self.engine.member_secured('cylinder_head')
+        self._sync_fasteners()
+        return {
+            'nut': joint.nut.nut_id,
+            'bolt': joint.bolt.bolt_id,
+            'applied_turns': turns,
+            'turns': round(joint.turns, 4),
+            'advance_mm': round(joint.advance_m * 1000.0, 3),
+            'seated': joint.seated,
+            'head_clamped': self.system_model.state['head_clamped'],
+            'head_gap_mm': round(self.engine.clamp_gap('cylinder_head') * 1000.0, 3),
+        }
+
+    def _sync_fasteners(self):
+        """Write nut and head poses from the threaded joints into MuJoCo."""
+        if not (self.simulation and self.simulation.is_loaded()):
+            return
+        for name, value in self.engine.joint_targets().items():
+            self.simulation.set_joint_qpos(name, value)
+        self.simulation.forward()
+
     def step_simulation(self, nsteps: int = 1):
         """Step the MuJoCo simulation forward."""
         if self.simulation and self.simulation.is_loaded():
             self.simulation.set_actuator('starter_motor', self.system_model.starter_torque_command())
             self.simulation.step(nsteps)
+            self._sync_fasteners()
             self.system_model.step(dt=0.01 * nsteps)
     
     def render(self):

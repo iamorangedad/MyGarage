@@ -53,6 +53,7 @@ class SystemModel:
             'backpressure_kpa': 0.0,
             'egr_flow_at_idle': False,
             'oil_pressure_psi': 0.0,
+            'head_clamped': True,
         }
 
     def _initialize_default_components(self):
@@ -330,6 +331,7 @@ class SystemModel:
             'backpressure_kpa': self.state['backpressure_kpa'],
             'egr_flow_at_idle': self.state['egr_flow_at_idle'],
             'oil_pressure_psi': self.state['oil_pressure_psi'],
+            'head_clamped': self.state.get('head_clamped', True),
         }
 
     def step(self, dt: float = 0.01):
@@ -470,8 +472,7 @@ class SystemModel:
         heater = self.get_component('heater_core')
         if heater and heater.parameters.get('leaking'):
             level = min(level, 0.35)
-        gasket = self.get_component('head_gasket')
-        if gasket and gasket.parameters.get('breached'):
+        if self._head_unsealed():
             level = min(level, 0.45)
         reservoir = self.get_component('coolant_reservoir')
         if reservoir and reservoir.parameters.get('cracked'):
@@ -522,10 +523,15 @@ class SystemModel:
         cap = self.get_component('radiator_cap')
         if cap and not cap.parameters.get('holds_pressure', True) and target < 100.0:
             target = 105.0
-        gasket = self.get_component('head_gasket')
-        if gasket and gasket.parameters.get('breached'):
+        if self._head_unsealed():
             return 116.0
         return target
+
+    def _head_unsealed(self) -> bool:
+        """A breached gasket or a head nut that is not seated lets combustion leak."""
+        gasket = self.get_component('head_gasket')
+        breached = bool(gasket and gasket.parameters.get('breached'))
+        return breached or not bool(self.state.get('head_clamped', True))
 
     def _oil_pressure(self) -> float:
         """Gallery pressure while the engine is running. Zero with the key off."""

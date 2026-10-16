@@ -247,4 +247,6 @@
 
 起动、充电、着车、冷却、机油压力、进气和排气接进了系统模型。其余零件在 `components/remaining.py` 里按同一套插件生成，用各自的测量读数和故障码区分。
 
-再加零件仍然是：新组件模块（或 `components/remaining.py` 里的一行）+ `data/fault_catalog.yaml` 里的故障条目，并把它放进 `components/__init__.py` 的 `COMPONENT_CLASSES`。
+结构上，气缸体和气缸盖不再是焊死的一块：缸盖由四颗螺母拧在双头螺栓上。拧紧才压住缸盖，拧松则缸盖可以离开缸体。以后的零件也按这个方式，用螺栓和螺母搭起来。详见 `docs/architecture.md` 的结构层。
+
+再加零件仍然是：新组件模块（或 `components/remaining.py` 里的一行）+ `data/fault_catalog.yaml` 里的故障条目，并把它放进 `components/__init__.py` 的 `COMPONENT_CLASSES`。需要拆装时，再在 `fasteners/` 里用螺栓和螺母组成装配。

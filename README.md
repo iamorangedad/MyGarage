@@ -222,7 +222,7 @@ pytest -v
 
 ### Current Components
 
-Every part in `docs/parts_catalog.md` is installed on the car. Parts that change cranking, fuel pressure, idle, oil pressure, or coolant temperature are coupled in the signal model. The rest are diagnosed from their own visual readings and OBD codes. The generated parts live in `components/remaining.py`.
+Every part in `docs/parts_catalog.md` is installed on the car. The engine block and cylinder head are held together by four nuts and studs (`fasteners/`). Menu option 21 turns a nut: positive tightens, and backing a nut off unseals the head. Parts that change cranking, fuel pressure, idle, oil pressure, or coolant temperature are coupled in the signal model. The rest are diagnosed from their own visual readings and OBD codes. The generated parts live in `components/remaining.py`.
 
 - **Starting**: battery, starter, ground strap, ignition switch, starter relay, starter fuse, solenoid, battery terminals, flywheel
 - **Charging**: alternator, serpentine belt, voltage regulator
@@ -456,7 +456,7 @@ pytest -v
 
 ### 当前组件
 
-`docs/parts_catalog.md` 里的零件都已经装在车上。会改变起动、油压、怠速、机油压力或水温的零件接在信号模型里，其余零件用各自的目视读数和故障码区分。生成的零件在 `components/remaining.py`。
+`docs/parts_catalog.md` 里的零件都已经装在车上。气缸盖用四颗螺母和双头螺栓固定在气缸体上（`fasteners/`）。菜单第 21 项可以拧螺母：正数拧紧，拧松会让缸盖不再压紧。会改变起动、油压、怠速、机油压力或水温的零件接在信号模型里，其余零件用各自的目视读数和故障码区分。生成的零件在 `components/remaining.py`。
 
 - **起动**：蓄电池、起动机、搭铁带、点火开关、起动继电器、起动熔断丝、电磁开关、蓄电池桩头、飞轮
 - **充电**：发电机、皮带、电压调节器

@@ -4,6 +4,8 @@
 
 MyGarage is a game-like simulator where players practice car diagnosis and repair in a virtual environment. The system uses MuJoCo for physics simulation and implements a modular, component-based architecture inspired by robotics simulation frameworks.
 
+The car is built from the fastener upward. A bolt and a nut are the primitive joint. An engine is not a single welded shape: it is a block and a head held by those joints. Diagnostic components sit on top of that structure and describe how a part fails.
+
 ## Implemented subsystems
 
 `components/__init__.py` lists every part the system model installs. The signal model in `system_model.py` couples them:
@@ -25,6 +27,20 @@ MyGarage is a game-like simulator where players practice car diagnosis and repai
 5. **Testability**: Headless operation enables automated testing
 
 ## Architecture Layers
+
+### 0. Structural layer (`fasteners/`)
+
+Parts are composed from threaded fasteners. The layers, from the bottom:
+
+1. `Thread` — diameter, pitch, and usable length. One turn advances one pitch.
+2. `Bolt` and `Nut` — a bolt is planted in a member. A nut can start on it only when diameter and pitch match.
+3. `ThreadedJoint` — turns run from first engagement (`0`) to fully tight (`seated_turns`). Positive turn tightens. Axial position is `turns * pitch`. The nut cannot run past the seat or back off the first thread.
+4. `Assembly` — named members plus the joints that clamp them. The loose side of a joint is secured only when every nut on that side is seated. The gap it can open is the slack of the tightest remaining nut.
+5. `build_engine()` — the first composed part. The cylinder head is clamped to the block by four M10×1.5 studs (`head_bolt_1` … `head_bolt_4` and matching nuts). Later parts follow the same pattern: a component is an assembly, not a new joint type.
+
+MuJoCo has hinge and slide joints and no screw joint. `fasteners/scene.py` inserts a hinge and a slide for each nut into `garage_scene.xml`. `Game` writes those coordinates from `ThreadedJoint` after every turn and after every simulation step, so the thread law stays in the fastener model. A loose head nut clears `head_clamped` on the signal model, and the cooling model treats that the same way as a breached head gasket.
+
+Menu option 21 turns a nut. Positive turns tighten it.
 
 ### 1. Component Layer (`component.py`, `components/`)
 
@@ -159,6 +175,7 @@ Wrapper around MuJoCo:
 - Garage floor and lighting
 - Car body (simplified box geometry)
 - Engine block with crankshaft joint
+- Cylinder head and four head studs. Each nut is a hinge plus a slide posed by the fastener model
 - Battery (visual geometry)
 - Starter motor (visual geometry)
 - Actuator: `starter_motor` applies torque to `crank_joint`

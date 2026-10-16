@@ -70,6 +70,7 @@ class DiagnosticTools:
                     'power_pct': context.get('power_pct'),
                     'backpressure_kpa': context.get('backpressure_kpa'),
                     'oil_pressure_psi': context.get('oil_pressure_psi'),
+                    'head_clamped': context.get('head_clamped', True),
                     'note': None if context.get('engine_running') else 'Engine is not running',
                 },
                 'timestamp': self._get_simulation_time(),

@@ -36,6 +36,7 @@ def print_menu():
     print("  18. Smoke test")
     print("  19. EGR test")
     print("  20. PCV rattle test")
+    print("  21. Turn a nut")
     print("  0. Quit")
     print()
 
@@ -83,6 +84,32 @@ def show_result(result: dict):
         print(f"Error: {readings['error']}")
         return
     print(format_readings(readings))
+
+
+def _turn_nut(game: Game):
+    """Ask which nut to turn and how many turns. Positive tightens."""
+    listing = game.list_fasteners()
+    print("\nFasteners:")
+    for row in listing['fasteners']:
+        state = 'seated' if row['seated'] else 'loose'
+        print(f"  {row['nut']} on {row['bolt']}: {row['turns']} turns, {row['advance_mm']} mm, {state}")
+    print(f"Head clamped: {listing['head_clamped']}. Gap: {listing['head_gap_mm']} mm")
+    nut_id = input("Nut id [head_nut_1]: ").strip() or 'head_nut_1'
+    raw = input("Turns (positive tightens, negative loosens): ").strip()
+    try:
+        turns = float(raw)
+    except ValueError:
+        print("Enter a number of turns.")
+        return
+    result = game.turn_fastener(nut_id, turns)
+    if 'error' in result:
+        print(f"Error: {result['error']}")
+        return
+    print(
+        f"\n{result['nut']} is at {result['turns']} turns "
+        f"({result['advance_mm']} mm along the bolt)."
+    )
+    print(f"Seated: {result['seated']}. Head clamped: {result['head_clamped']}. Gap: {result['head_gap_mm']} mm")
 
 
 def interactive_mode(game: Game):
@@ -227,6 +254,9 @@ def interactive_mode(game: Game):
         elif choice == '20':
             print("\nPCV rattle test:")
             show_result(game.perform_diagnostic('rattle_test', 'pcv_valve'))
+
+        elif choice == '21':
+            _turn_nut(game)
 
         else:
             print("Invalid choice. Try again.")

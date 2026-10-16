@@ -222,14 +222,15 @@ pytest -v
 
 ### Current Components
 
-The playable car covers five subsystems. See `docs/parts_catalog.md` for the full list and which rows are implemented.
+Every part in `docs/parts_catalog.md` is installed on the car. Parts that change cranking, fuel pressure, idle, oil pressure, or coolant temperature are coupled in the signal model. The rest are diagnosed from their own visual readings and OBD codes. The generated parts live in `components/remaining.py`.
 
-- **Starting**: battery, starter, ground strap, ignition switch, starter relay, starter fuse, solenoid
+- **Starting**: battery, starter, ground strap, ignition switch, starter relay, starter fuse, solenoid, battery terminals, flywheel
 - **Charging**: alternator, serpentine belt, voltage regulator
-- **Combustion**: spark plug, ignition coil, fuel injector, fuel pump, crankshaft position sensor
-- **Cooling**: thermostat, water pump, cooling fan, coolant temperature sensor, radiator
-- **Chassis**: brake pads, brake disc, wheel speed sensor, shock absorber
-- **Intake and exhaust**: air filter, throttle body, intake gasket, MAF, MAP, upstream and downstream O2, catalytic converter, EGR valve, PCV valve
+- **Combustion**: spark plug, ignition coil, fuel injector, fuel pump, crankshaft position sensor, camshaft sensor, timing belt, plug wire, distributor, fuel filter, fuel pressure regulator
+- **Cooling**: thermostat, water pump, cooling fan, fan relay, coolant temperature sensor, radiator, radiator cap, hoses, heater core, reservoir, head gasket
+- **Lubrication**: oil pump, oil pan
+- **Chassis**: brake pads, brake disc, wheel speed sensor, shock absorber, plus the remaining brake, steering, suspension, and wheel parts
+- **Intake and exhaust**: air filter, throttle body, idle air control, intake gasket, vacuum hose, purge valve, MAF, MAP, upstream and downstream O2, catalytic converter, muffler, EGR valve, PCV valve
 
 ### License
 
@@ -455,14 +456,15 @@ pytest -v
 
 ### 当前组件
 
-目前可以诊断的零件覆盖五个系统，完整对照见 `docs/parts_catalog.md`。
+`docs/parts_catalog.md` 里的零件都已经装在车上。会改变起动、油压、怠速、机油压力或水温的零件接在信号模型里，其余零件用各自的目视读数和故障码区分。生成的零件在 `components/remaining.py`。
 
-- **起动**：蓄电池、起动机、搭铁带、点火开关、起动继电器、起动熔断丝、电磁开关
+- **起动**：蓄电池、起动机、搭铁带、点火开关、起动继电器、起动熔断丝、电磁开关、蓄电池桩头、飞轮
 - **充电**：发电机、皮带、电压调节器
-- **燃烧**：火花塞、点火线圈、喷油器、燃油泵、曲轴位置传感器
-- **冷却**：节温器、水泵、冷却风扇、水温传感器、散热器
-- **底盘**：制动片、制动盘、轮速传感器、减振器
-- **进气与排气**：空气滤清器、节气门、进气歧管垫、空气流量计、进气压力传感器、前后氧传感器、三元催化器、EGR 阀、PCV 阀
+- **燃烧**：火花塞、点火线圈、喷油器、燃油泵、曲轴位置传感器、凸轮轴位置传感器、正时皮带、高压线、分电器、燃油滤清器、燃油压力调节器
+- **冷却**：节温器、水泵、冷却风扇、风扇继电器、水温传感器、散热器、散热器盖、冷却液软管、暖风水箱、膨胀水箱、气缸垫
+- **润滑**：机油泵、油底壳
+- **底盘**：制动片、制动盘、轮速传感器、减振器，以及其余制动、转向、悬架和车轮零件
+- **进气与排气**：空气滤清器、节气门、怠速控制阀、进气歧管垫、真空管、碳罐电磁阀、空气流量计、进气压力传感器、前后氧传感器、三元催化器、消声器、EGR 阀、PCV 阀
 
 ### 许可证
 

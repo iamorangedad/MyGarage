@@ -741,3 +741,1136 @@ faults:
       - "Oil mist around the valve cover"
     difficulty: "easy"
     points: 90
+
+
+# Remaining catalog parts. One fault each, generated from components/remaining.py.
+  - fault_id: "F066"
+    component_id: "battery_pos_terminal"
+    fault_name: "corroded_terminal"
+    description: "White corrosion on the positive post"
+    root_cause: "Slow crank and a large voltage drop at the positive post"
+    symptoms:
+      - "Slow crank and a large voltage drop at the positive post"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F067"
+    component_id: "battery_neg_terminal"
+    fault_name: "corroded_terminal"
+    description: "Powdery corrosion on the negative clamp"
+    root_cause: "Dim lights and a voltage drop on the ground side"
+    symptoms:
+      - "Dim lights and a voltage drop on the ground side"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F068"
+    component_id: "engine"
+    fault_name: "low_compression"
+    description: "Compression is low on multiple cylinders"
+    root_cause: "Long crank and low power"
+    symptoms:
+      - "Long crank and low power"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F069"
+    component_id: "engine_block"
+    fault_name: "cracked_block"
+    description: "Coolant weeps from a crack in the block"
+    root_cause: "External coolant leak low on the block"
+    symptoms:
+      - "External coolant leak low on the block"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F070"
+    component_id: "cylinder_head"
+    fault_name: "warped_head"
+    description: "Head deck is warped beyond spec"
+    root_cause: "Overheat history and combustion leakage into the coolant"
+    symptoms:
+      - "Overheat history and combustion leakage into the coolant"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F071"
+    component_id: "head_gasket"
+    fault_name: "breached_gasket"
+    description: "Exhaust gas in the coolant and oil looks milky"
+    root_cause: "Overheats and loses coolant with no external puddle"
+    symptoms:
+      - "Overheats and loses coolant with no external puddle"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F072"
+    component_id: "piston"
+    fault_name: "scuffed_piston"
+    description: "Piston skirt is scuffed"
+    root_cause: "Knock when cold"
+    symptoms:
+      - "Knock when cold"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F073"
+    component_id: "piston_rings"
+    fault_name: "worn_rings"
+    description: "Leakdown is high and the oil is low"
+    root_cause: "Blue smoke on startup and low compression"
+    symptoms:
+      - "Blue smoke on startup and low compression"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F074"
+    component_id: "connecting_rod"
+    fault_name: "spun_bearing"
+    description: "Rod bearing material is in the oil"
+    root_cause: "Deep knock that rises with rpm"
+    symptoms:
+      - "Deep knock that rises with rpm"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F075"
+    component_id: "crankshaft"
+    fault_name: "worn_journal"
+    description: "Crank journal is scored"
+    root_cause: "Low oil pressure at hot idle"
+    symptoms:
+      - "Low oil pressure at hot idle"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F076"
+    component_id: "camshaft"
+    fault_name: "worn_lobe"
+    description: "One cam lobe is worn flat"
+    root_cause: "Misfire on one cylinder and a ticking lifter"
+    symptoms:
+      - "Misfire on one cylinder and a ticking lifter"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F077"
+    component_id: "timing_belt"
+    fault_name: "broken_belt"
+    description: "Belt is off the sprockets"
+    root_cause: "Cranks but will not start"
+    symptoms:
+      - "Cranks but will not start"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F078"
+    component_id: "valve"
+    fault_name: "burnt_valve"
+    description: "Exhaust valve face is burnt"
+    root_cause: "Popping in the exhaust and low compression on one cylinder"
+    symptoms:
+      - "Popping in the exhaust and low compression on one cylinder"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F079"
+    component_id: "valve_stem_seal"
+    fault_name: "hardened_seal"
+    description: "Valve stem seals are hard and cracked"
+    root_cause: "Blue smoke just after idle"
+    symptoms:
+      - "Blue smoke just after idle"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F080"
+    component_id: "flywheel"
+    fault_name: "damaged_ring_gear"
+    description: "Several ring-gear teeth are smashed"
+    root_cause: "Grinds when the starter engages"
+    symptoms:
+      - "Grinds when the starter engages"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F081"
+    component_id: "cmp_sensor"
+    fault_name: "no_signal"
+    description: "No camshaft-position signal"
+    root_cause: "Cranks but will not start"
+    symptoms:
+      - "Cranks but will not start"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F082"
+    component_id: "spark_plug_wire"
+    fault_name: "open_wire"
+    description: "Plug wire is open"
+    root_cause: "Misfire that moves when the wire is moved"
+    symptoms:
+      - "Misfire that moves when the wire is moved"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F083"
+    component_id: "distributor"
+    fault_name: "cracked_cap"
+    description: "Carbon track inside the distributor cap"
+    root_cause: "Misfire under load"
+    symptoms:
+      - "Misfire under load"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F084"
+    component_id: "knock_sensor"
+    fault_name: "open_sensor"
+    description: "Knock sensor circuit is open"
+    root_cause: "Pinging under load and no knock correction"
+    symptoms:
+      - "P0325"
+      - "Pinging under load and no knock correction"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F085"
+    component_id: "fuel_tank"
+    fault_name: "leaking_tank"
+    description: "Fuel smell and a wet tank seam"
+    root_cause: "Fuel odor and a puddle under the tank"
+    symptoms:
+      - "Fuel odor and a puddle under the tank"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F086"
+    component_id: "fuel_filter"
+    fault_name: "clogged_filter"
+    description: "Filter is dark and restricted"
+    root_cause: "Long crank and low rail pressure"
+    symptoms:
+      - "Long crank and low rail pressure"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F087"
+    component_id: "fuel_pressure_regulator"
+    fault_name: "stuck_low"
+    description: "Regulator vacuum diaphragm is ruptured"
+    root_cause: "Low rail pressure and fuel in the vacuum hose"
+    symptoms:
+      - "Low rail pressure and fuel in the vacuum hose"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F088"
+    component_id: "fuel_rail"
+    fault_name: "leaking_rail"
+    description: "Fuel seeps at a rail fitting"
+    root_cause: "Fuel smell in the engine bay"
+    symptoms:
+      - "Fuel smell in the engine bay"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F089"
+    component_id: "fuel_cap"
+    fault_name: "loose_cap"
+    description: "Cap clicks but does not seal"
+    root_cause: "EVAP large-leak code after refueling"
+    symptoms:
+      - "P0455"
+      - "EVAP large-leak code after refueling"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F090"
+    component_id: "evap_canister"
+    fault_name: "saturated_canister"
+    description: "Canister is heavy and smells of raw fuel"
+    root_cause: "Fuel smell and rich spikes"
+    symptoms:
+      - "P0442"
+      - "Fuel smell and rich spikes"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F091"
+    component_id: "purge_valve"
+    fault_name: "stuck_open"
+    description: "Purge valve flows when it should be shut"
+    root_cause: "Slightly high idle and a fuel trim shift"
+    symptoms:
+      - "P0441"
+      - "Slightly high idle and a fuel trim shift"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F092"
+    component_id: "iac_valve"
+    fault_name: "stuck_closed"
+    description: "Idle air passage is carboned shut"
+    root_cause: "Idle drops and the engine stalls"
+    symptoms:
+      - "P0505"
+      - "Idle drops and the engine stalls"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F093"
+    component_id: "intake_manifold"
+    fault_name: "cracked_runner"
+    description: "Crack at a runner"
+    root_cause: "Whistle and a lean code on one bank"
+    symptoms:
+      - "Whistle and a lean code on one bank"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F094"
+    component_id: "iat_sensor"
+    fault_name: "biased_hot"
+    description: "Sensor reads hot while the intake is cool"
+    root_cause: "Slightly lean calculation and a temperature code"
+    symptoms:
+      - "P0113"
+      - "Slightly lean calculation and a temperature code"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F095"
+    component_id: "tps_sensor"
+    fault_name: "dead_spot"
+    description: "Voltage drops out partway through the sweep"
+    root_cause: "Hesitation at one throttle angle"
+    symptoms:
+      - "P0121"
+      - "Hesitation at one throttle angle"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F096"
+    component_id: "exhaust_manifold"
+    fault_name: "cracked_manifold"
+    description: "Tick from a cracked manifold when cold"
+    root_cause: "Exhaust tick and a lean shift at idle"
+    symptoms:
+      - "Exhaust tick and a lean shift at idle"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F097"
+    component_id: "muffler"
+    fault_name: "clogged_muffler"
+    description: "Muffler baffles are collapsed"
+    root_cause: "Loss of power and high exhaust backpressure"
+    symptoms:
+      - "Loss of power and high exhaust backpressure"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F098"
+    component_id: "radiator_cap"
+    fault_name: "failed_cap"
+    description: "Cap does not hold pressure"
+    root_cause: "Coolant boils and the upper hose collapses"
+    symptoms:
+      - "Coolant boils and the upper hose collapses"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F099"
+    component_id: "fan_relay"
+    fault_name: "failed_open"
+    description: "Relay contacts do not close"
+    root_cause: "Fan never runs and the engine overheats at idle"
+    symptoms:
+      - "Fan never runs and the engine overheats at idle"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F100"
+    component_id: "coolant_reservoir"
+    fault_name: "cracked_tank"
+    description: "Crack at the reservoir seam"
+    root_cause: "Coolant level falls with a visible leak"
+    symptoms:
+      - "Coolant level falls with a visible leak"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F101"
+    component_id: "heater_core"
+    fault_name: "leaking_core"
+    description: "Sweet smell and a wet passenger carpet"
+    root_cause: "Heater output with coolant inside the car"
+    symptoms:
+      - "Heater output with coolant inside the car"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F102"
+    component_id: "coolant_hose"
+    fault_name: "burst_hose"
+    description: "Upper hose is split"
+    root_cause: "Sudden coolant loss and overheat"
+    symptoms:
+      - "Sudden coolant loss and overheat"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F103"
+    component_id: "oil_pump"
+    fault_name: "failed_pump"
+    description: "Pump relief valve is stuck or the gears are worn"
+    root_cause: "Oil light on as soon as the engine starts"
+    symptoms:
+      - "Oil light on as soon as the engine starts"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F104"
+    component_id: "oil_filter"
+    fault_name: "clogged_filter"
+    description: "Filter is swollen and the bypass is open"
+    root_cause: "Oil pressure warning after a cold start"
+    symptoms:
+      - "Oil pressure warning after a cold start"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F105"
+    component_id: "oil_pan"
+    fault_name: "leaking_pan"
+    description: "Wet seam at the oil pan"
+    root_cause: "Oil puddle and a low dipstick reading"
+    symptoms:
+      - "Oil puddle and a low dipstick reading"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F106"
+    component_id: "oil_pressure_sensor"
+    fault_name: "false_low"
+    description: "Gauge reads zero while a mechanical gauge shows pressure"
+    root_cause: "Oil light on but the engine is quiet"
+    symptoms:
+      - "P0522"
+      - "Oil light on but the engine is quiet"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F107"
+    component_id: "dipstick"
+    fault_name: "blocked_tube"
+    description: "Dipstick tube is crushed"
+    root_cause: "Oil level cannot be checked and the tube leaks air"
+    symptoms:
+      - "Oil level cannot be checked and the tube leaks air"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F108"
+    component_id: "clutch_disc"
+    fault_name: "slipping_disc"
+    description: "Disc is glazed and thin"
+    root_cause: "Rpm rises without road speed under load"
+    symptoms:
+      - "Rpm rises without road speed under load"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F109"
+    component_id: "pressure_plate"
+    fault_name: "weak_plate"
+    description: "Pressure-plate fingers are uneven"
+    root_cause: "Clutch slip and a heavy or shuddering pedal"
+    symptoms:
+      - "Clutch slip and a heavy or shuddering pedal"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F110"
+    component_id: "release_bearing"
+    fault_name: "noisy_bearing"
+    description: "Bearing growls with the pedal down"
+    root_cause: "Noise only while the clutch pedal is pressed"
+    symptoms:
+      - "Noise only while the clutch pedal is pressed"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F111"
+    component_id: "manual_transmission"
+    fault_name: "worn_synchro"
+    description: "Second-gear synchro grinds"
+    root_cause: "Grind going into second"
+    symptoms:
+      - "Grind going into second"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F112"
+    component_id: "automatic_transmission"
+    fault_name: "slipping_clutch"
+    description: "Shift flare between gears"
+    root_cause: "Engine races during a shift"
+    symptoms:
+      - "Engine races during a shift"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F113"
+    component_id: "torque_converter"
+    fault_name: "shudder"
+    description: "Lockup clutch shudders"
+    root_cause: "Vibration at steady cruise"
+    symptoms:
+      - "P0741"
+      - "Vibration at steady cruise"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F114"
+    component_id: "tcm"
+    fault_name: "no_communication"
+    description: "No communication with the transmission module"
+    root_cause: "Transmission stays in limp mode"
+    symptoms:
+      - "U0101"
+      - "Transmission stays in limp mode"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F115"
+    component_id: "shift_solenoid"
+    fault_name: "failed_solenoid"
+    description: "Shift solenoid is electrically open"
+    root_cause: "Missing one gear"
+    symptoms:
+      - "P0750"
+      - "Missing one gear"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F116"
+    component_id: "driveshaft"
+    fault_name: "failed_ujoint"
+    description: "U-joint has play and a dry cap"
+    root_cause: "Clunk on takeoff and vibration with speed"
+    symptoms:
+      - "Clunk on takeoff and vibration with speed"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F117"
+    component_id: "cv_joint"
+    fault_name: "torn_boot"
+    description: "Boot is torn and the joint clicks on turns"
+    root_cause: "Clicking while turning under power"
+    symptoms:
+      - "Clicking while turning under power"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F118"
+    component_id: "axle_shaft"
+    fault_name: "twisted_shaft"
+    description: "Axle shaft is twisted"
+    root_cause: "No drive on one side after a hard launch"
+    symptoms:
+      - "No drive on one side after a hard launch"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F119"
+    component_id: "differential"
+    fault_name: "worn_gears"
+    description: "Howl that changes with throttle"
+    root_cause: "Howl on cruise that changes when you lift"
+    symptoms:
+      - "Howl on cruise that changes when you lift"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F120"
+    component_id: "wheel_bearing"
+    fault_name: "worn_bearing"
+    description: "Growl that changes when the wheel is steered"
+    root_cause: "Growl that gets louder with speed"
+    symptoms:
+      - "Growl that gets louder with speed"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F121"
+    component_id: "brake_pedal"
+    fault_name: "soft_pedal"
+    description: "Pedal sinks slowly at a stop"
+    root_cause: "Pedal sinks while holding at a light"
+    symptoms:
+      - "Pedal sinks while holding at a light"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F122"
+    component_id: "master_cylinder"
+    fault_name: "bypassing_seals"
+    description: "Fluid bypasses the master-cylinder seals"
+    root_cause: "Pedal sinks with no external leak"
+    symptoms:
+      - "Pedal sinks with no external leak"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F123"
+    component_id: "brake_booster"
+    fault_name: "leaking_booster"
+    description: "Booster does not hold vacuum"
+    root_cause: "Hard pedal and a hiss with the pedal pressed"
+    symptoms:
+      - "Hard pedal and a hiss with the pedal pressed"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F124"
+    component_id: "brake_fluid_reservoir"
+    fault_name: "leaking_reservoir"
+    description: "Wet reservoir and a low fluid level"
+    root_cause: "Brake warning light and a low pedal"
+    symptoms:
+      - "Brake warning light and a low pedal"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F125"
+    component_id: "brake_line"
+    fault_name: "rusted_through"
+    description: "Steel line is rusted through"
+    root_cause: "Pedal goes to the floor and a fluid trail"
+    symptoms:
+      - "Pedal goes to the floor and a fluid trail"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F126"
+    component_id: "brake_caliper"
+    fault_name: "seized_caliper"
+    description: "Caliper piston is seized"
+    root_cause: "Car pulls and that wheel runs hot"
+    symptoms:
+      - "Car pulls and that wheel runs hot"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F127"
+    component_id: "brake_drum"
+    fault_name: "scored_drum"
+    description: "Drum surface is deeply scored"
+    root_cause: "Grab or pulsation from the rear brakes"
+    symptoms:
+      - "Grab or pulsation from the rear brakes"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F128"
+    component_id: "brake_shoes"
+    fault_name: "worn_shoes"
+    description: "Shoe lining is at the rivets"
+    root_cause: "Rear brake noise and a long pedal"
+    symptoms:
+      - "Rear brake noise and a long pedal"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F129"
+    component_id: "wheel_cylinder"
+    fault_name: "leaking_cylinder"
+    description: "Wheel cylinder is wet behind the drum"
+    root_cause: "Pull to one side and fluid on the shoes"
+    symptoms:
+      - "Pull to one side and fluid on the shoes"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F130"
+    component_id: "abs_module"
+    fault_name: "internal_fault"
+    description: "ABS module reports an internal fault"
+    root_cause: "ABS light stays on"
+    symptoms:
+      - "C1095"
+      - "ABS light stays on"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F131"
+    component_id: "brake_switch"
+    fault_name: "failed_switch"
+    description: "Brake lights stay off when the pedal is pressed"
+    root_cause: "No brake lights and cruise will not set"
+    symptoms:
+      - "No brake lights and cruise will not set"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F132"
+    component_id: "steering_wheel"
+    fault_name: "broken_clockspring"
+    description: "Clockspring is open"
+    root_cause: "Horn and airbag light after the wheel is turned"
+    symptoms:
+      - "B1000"
+      - "Horn and airbag light after the wheel is turned"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F133"
+    component_id: "steering_column"
+    fault_name: "loose_ujoint"
+    description: "Column U-joint is loose"
+    root_cause: "Clunk in the column over bumps"
+    symptoms:
+      - "Clunk in the column over bumps"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F134"
+    component_id: "steering_rack"
+    fault_name: "leaking_rack"
+    description: "Rack boot is full of fluid"
+    root_cause: "Heavy steering and a wet subframe"
+    symptoms:
+      - "Heavy steering and a wet subframe"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F135"
+    component_id: "power_steering_pump"
+    fault_name: "failed_pump"
+    description: "Pump whines and pressure is low"
+    root_cause: "Heavy steering and a whine at full lock"
+    symptoms:
+      - "Heavy steering and a whine at full lock"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F136"
+    component_id: "eps_module"
+    fault_name: "no_assist"
+    description: "Electric power steering is offline"
+    root_cause: "Steering is suddenly heavy"
+    symptoms:
+      - "C1511"
+      - "Steering is suddenly heavy"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F137"
+    component_id: "tie_rod"
+    fault_name: "worn_tie_rod"
+    description: "Inner or outer tie rod has play"
+    root_cause: "Wandering and tire wear on the edges"
+    symptoms:
+      - "Wandering and tire wear on the edges"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F138"
+    component_id: "steering_knuckle"
+    fault_name: "bent_knuckle"
+    description: "Knuckle is bent"
+    root_cause: "Steering wheel off center after an impact"
+    symptoms:
+      - "Steering wheel off center after an impact"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F139"
+    component_id: "coil_spring"
+    fault_name: "sagged_spring"
+    description: "One spring has sagged"
+    root_cause: "Car sits low at one corner"
+    symptoms:
+      - "Car sits low at one corner"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F140"
+    component_id: "control_arm"
+    fault_name: "bent_arm"
+    description: "Control arm is bent"
+    root_cause: "Pull and an alignment that will not hold"
+    symptoms:
+      - "Pull and an alignment that will not hold"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F141"
+    component_id: "ball_joint"
+    fault_name: "worn_joint"
+    description: "Ball joint has vertical play"
+    root_cause: "Clunk over bumps and uneven tire wear"
+    symptoms:
+      - "Clunk over bumps and uneven tire wear"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F142"
+    component_id: "sway_bar"
+    fault_name: "broken_bar"
+    description: "Sway bar is broken at a bend"
+    root_cause: "Body rolls more in corners"
+    symptoms:
+      - "Body rolls more in corners"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F143"
+    component_id: "sway_bar_link"
+    fault_name: "broken_link"
+    description: "Link is separated"
+    root_cause: "Rattle over small bumps"
+    symptoms:
+      - "Rattle over small bumps"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F144"
+    component_id: "suspension_bushing"
+    fault_name: "torn_bushing"
+    description: "Bushing is torn"
+    root_cause: "Clunk on takeoff and a shifted wheel"
+    symptoms:
+      - "Clunk on takeoff and a shifted wheel"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F145"
+    component_id: "strut"
+    fault_name: "blown_strut"
+    description: "Strut cartridge is oil-soaked"
+    root_cause: "Bounce and a knock at that corner"
+    symptoms:
+      - "Bounce and a knock at that corner"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F146"
+    component_id: "tire"
+    fault_name: "punctured"
+    description: "Nail in the tread"
+    root_cause: "Pull and a low-pressure warning"
+    symptoms:
+      - "Pull and a low-pressure warning"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F147"
+    component_id: "wheel_rim"
+    fault_name: "bent_rim"
+    description: "Rim is bent at the bead"
+    root_cause: "Vibration and a slow leak"
+    symptoms:
+      - "Vibration and a slow leak"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F148"
+    component_id: "tire_valve"
+    fault_name: "leaking_core"
+    description: "Valve core leaks"
+    root_cause: "Slow leak at the valve stem"
+    symptoms:
+      - "Slow leak at the valve stem"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F149"
+    component_id: "tpms_sensor"
+    fault_name: "dead_battery"
+    description: "Sensor battery is dead"
+    root_cause: "TPMS light with one sensor missing"
+    symptoms:
+      - "C0750"
+      - "TPMS light with one sensor missing"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F150"
+    component_id: "ac_compressor"
+    fault_name: "seized_compressor"
+    description: "Compressor shaft will not turn"
+    root_cause: "Belt scream and no cold air"
+    symptoms:
+      - "Belt scream and no cold air"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F151"
+    component_id: "ac_clutch"
+    fault_name: "open_coil"
+    description: "Clutch coil is open"
+    root_cause: "Compressor never engages"
+    symptoms:
+      - "P0645"
+      - "Compressor never engages"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F152"
+    component_id: "condenser"
+    fault_name: "blocked_condenser"
+    description: "Fins are packed with debris"
+    root_cause: "High discharge pressure and warm air"
+    symptoms:
+      - "High discharge pressure and warm air"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F153"
+    component_id: "expansion_valve"
+    fault_name: "stuck_closed"
+    description: "Expansion valve is stuck closed"
+    root_cause: "Low side in a vacuum and no cooling"
+    symptoms:
+      - "Low side in a vacuum and no cooling"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F154"
+    component_id: "evaporator"
+    fault_name: "leaking_evaporator"
+    description: "Oily dust at the evaporator case"
+    root_cause: "Sweet chemical smell and no cold air"
+    symptoms:
+      - "Sweet chemical smell and no cold air"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F155"
+    component_id: "blower_motor"
+    fault_name: "seized_blower"
+    description: "Blower wheel does not turn"
+    root_cause: "No airflow at any speed"
+    symptoms:
+      - "No airflow at any speed"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F156"
+    component_id: "blower_resistor"
+    fault_name: "open_resistor"
+    description: "Resistor is open"
+    root_cause: "Only the highest fan speed works"
+    symptoms:
+      - "Only the highest fan speed works"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F157"
+    component_id: "ac_pressure_switch"
+    fault_name: "failed_open"
+    description: "Pressure switch is open with a full charge"
+    root_cause: "Compressor will not engage even though the charge is correct"
+    symptoms:
+      - "Compressor will not engage even though the charge is correct"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F158"
+    component_id: "ecu"
+    fault_name: "failed_driver"
+    description: "ECU injector driver has failed"
+    root_cause: "No start or a dead cylinder with power and grounds good"
+    symptoms:
+      - "P0601"
+      - "No start or a dead cylinder with power and grounds good"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F159"
+    component_id: "bcm"
+    fault_name: "no_communication"
+    description: "No communication with the body module"
+    root_cause: "Lights locks and wipers act on their own"
+    symptoms:
+      - "U0140"
+      - "Lights locks and wipers act on their own"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F160"
+    component_id: "instrument_cluster"
+    fault_name: "dead_cluster"
+    description: "Cluster has no power or no network"
+    root_cause: "No gauges and no warning lamps"
+    symptoms:
+      - "U0155"
+      - "No gauges and no warning lamps"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F161"
+    component_id: "obd_port"
+    fault_name: "no_power"
+    description: "Pin 16 has no battery voltage"
+    root_cause: "Scan tool will not power up"
+    symptoms:
+      - "Scan tool will not power up"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F162"
+    component_id: "headlight"
+    fault_name: "failed_bulb"
+    description: "Low-beam bulb is open"
+    root_cause: "One headlight is out"
+    symptoms:
+      - "One headlight is out"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F163"
+    component_id: "tail_light"
+    fault_name: "failed_bulb"
+    description: "Tail or brake filament is open"
+    root_cause: "One side stays dark"
+    symptoms:
+      - "One side stays dark"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F164"
+    component_id: "turn_signal"
+    fault_name: "failed_bulb"
+    description: "One corner does not flash"
+    root_cause: "Fast flash on that side"
+    symptoms:
+      - "Fast flash on that side"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F165"
+    component_id: "flasher_relay"
+    fault_name: "failed_flasher"
+    description: "Flasher does not click"
+    root_cause: "No turn signals on either side"
+    symptoms:
+      - "No turn signals on either side"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F166"
+    component_id: "horn"
+    fault_name: "failed_horn"
+    description: "Horn element is open"
+    root_cause: "No horn with the relay clicking"
+    symptoms:
+      - "No horn with the relay clicking"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F167"
+    component_id: "horn_relay"
+    fault_name: "failed_relay"
+    description: "Horn relay does not close"
+    root_cause: "No horn and no click"
+    symptoms:
+      - "No horn and no click"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F168"
+    component_id: "wiper_motor"
+    fault_name: "seized_motor"
+    description: "Motor does not move"
+    root_cause: "Wipers dead in every position"
+    symptoms:
+      - "Wipers dead in every position"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F169"
+    component_id: "wiper_blade"
+    fault_name: "torn_blade"
+    description: "Blade edge is torn"
+    root_cause: "Streaks across the glass"
+    symptoms:
+      - "Streaks across the glass"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F170"
+    component_id: "window_motor"
+    fault_name: "failed_motor"
+    description: "Motor draws nothing"
+    root_cause: "One window does not move"
+    symptoms:
+      - "One window does not move"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F171"
+    component_id: "door_lock_actuator"
+    fault_name: "stripped_actuator"
+    description: "Actuator motor runs but the lock does not move"
+    root_cause: "One door will not lock"
+    symptoms:
+      - "One door will not lock"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F172"
+    component_id: "fuse_box"
+    fault_name: "corroded_bus"
+    description: "Bus bar is corroded"
+    root_cause: "Several circuits drop out together"
+    symptoms:
+      - "Several circuits drop out together"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F173"
+    component_id: "relay_box"
+    fault_name: "melted_socket"
+    description: "One relay socket is melted"
+    root_cause: "That relay loses power when warm"
+    symptoms:
+      - "That relay loses power when warm"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F174"
+    component_id: "vss"
+    fault_name: "no_signal"
+    description: "No vehicle-speed signal"
+    root_cause: "Speedometer stays at zero"
+    symptoms:
+      - "P0500"
+      - "Speedometer stays at zero"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F175"
+    component_id: "app_sensor"
+    fault_name: "mismatch"
+    description: "The two pedal tracks do not agree"
+    root_cause: "Throttle is forced to idle"
+    symptoms:
+      - "P2138"
+      - "Throttle is forced to idle"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F176"
+    component_id: "vacuum_hose"
+    fault_name: "split_hose"
+    description: "Vacuum hose is split"
+    root_cause: "High idle and a hiss under the hood"
+    symptoms:
+      - "High idle and a hiss under the hood"
+    difficulty: "medium"
+    points: 140

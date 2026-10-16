@@ -39,6 +39,7 @@ from mygarage.components.intake_exhaust import (
     ThrottleBody,
     UpstreamO2Sensor,
 )
+from mygarage.components.remaining import remaining_classes
 from mygarage.components.starter_motor import StarterMotor
 from mygarage.components.starting import (
     GroundStrap,
@@ -48,8 +49,7 @@ from mygarage.components.starting import (
     StarterSolenoid,
 )
 
-# Order matches the build sequence: starting, charging, combustion, cooling,
-# chassis, then intake and exhaust.
+# Hand-written parts first, then one generated class per remaining catalog row.
 COMPONENT_CLASSES = [
     Battery,
     StarterMotor,
@@ -85,7 +85,7 @@ COMPONENT_CLASSES = [
     CatalyticConverter,
     EGRValve,
     PCVValve,
-]
+] + remaining_classes()
 
 
 def default_components():

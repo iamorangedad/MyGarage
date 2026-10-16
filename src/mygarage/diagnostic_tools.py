@@ -69,6 +69,7 @@ class DiagnosticTools:
                     'catalyst_efficiency': context.get('catalyst_efficiency'),
                     'power_pct': context.get('power_pct'),
                     'backpressure_kpa': context.get('backpressure_kpa'),
+                    'oil_pressure_psi': context.get('oil_pressure_psi'),
                     'note': None if context.get('engine_running') else 'Engine is not running',
                 },
                 'timestamp': self._get_simulation_time(),

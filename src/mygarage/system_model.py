@@ -52,6 +52,7 @@ class SystemModel:
             'power_pct': 0.0,
             'backpressure_kpa': 0.0,
             'egr_flow_at_idle': False,
+            'oil_pressure_psi': 0.0,
         }
 
     def _initialize_default_components(self):
@@ -135,7 +136,8 @@ class SystemModel:
         battery_readings = battery.get_diagnostic_readings('multimeter', context)
         voltage_under_load = float(battery_readings['voltage'])
         ground_drop = self._ground_drop()
-        voltage_at_starter = voltage_under_load - ground_drop
+        terminal_drop = self._terminal_drop()
+        voltage_at_starter = voltage_under_load - ground_drop - terminal_drop
         starter_torque = starter.parameters['torque_output']
 
         if starter_torque > 2.0 and voltage_at_starter > 9.6:
@@ -156,6 +158,13 @@ class SystemModel:
             if ground_drop > 2.0:
                 reason = 'Excessive voltage drop on the ground strap'
 
+        flywheel = self.get_component('flywheel')
+        if flywheel and not flywheel.parameters.get('teeth_ok', True):
+            cranking_rpm = 0
+            sound = 'grinding'
+            success = False
+            reason = 'Flywheel ring gear is damaged'
+
         self.state['engine_rpm'] = cranking_rpm
         self._refresh_signals()
         return {
@@ -167,6 +176,7 @@ class SystemModel:
             'rpm': cranking_rpm,
             'voltage_under_load': round(voltage_at_starter, 2),
             'ground_drop': round(ground_drop, 2),
+            'terminal_drop': round(terminal_drop, 2),
         }
 
     def start_attempt(self) -> Dict[str, Any]:
@@ -217,15 +227,25 @@ class SystemModel:
             return self._no_start('Run circuit is open, so the ECU, coil, and fuel pump have no power')
         if ckp and not ckp.parameters['signal_present']:
             return self._no_start('No crankshaft position signal, so the ECU will not fire spark or injectors')
-        if pump and pump.parameters['pressure_psi'] < 15:
+        belt = self.get_component('timing_belt')
+        if belt and belt.parameters.get('broken'):
+            return self._no_start('Timing belt is broken, so the camshaft is not turning')
+        cmp = self.get_component('cmp_sensor')
+        if cmp and not cmp.parameters.get('signal_present', True):
+            return self._no_start('No camshaft position signal, so the ECU will not fire the correct cylinder')
+        fuel_pressure = self._available_fuel_pressure()
+        if pump and fuel_pressure < 15:
             return self._no_start('Fuel pressure is too low to start')
         if coil and coil.parameters['spark_kv'] < 8:
             return self._no_start('Ignition coil is not producing spark')
+        plug_wire = self.get_component('spark_plug_wire')
+        if plug_wire and plug_wire.parameters.get('open_circuit'):
+            return self._no_start('Spark plug wire is open')
 
         reasons = []
         if ckp and ckp.parameters.get('intermittent'):
             reasons.append('CKP signal drops out')
-        if pump and pump.parameters['pressure_psi'] < 45:
+        if pump and fuel_pressure < 45:
             reasons.append('fuel pressure is marginal')
         if coil and coil.parameters['spark_kv'] < 20:
             reasons.append('spark is weak')
@@ -235,6 +255,9 @@ class SystemModel:
             reasons.append('a fuel injector is clogged')
         if injector and injector.parameters.get('leaking'):
             reasons.append('a fuel injector is leaking')
+        distributor = self.get_component('distributor')
+        if distributor and distributor.parameters.get('cracked'):
+            reasons.append('distributor cap is tracking spark to ground')
 
         if reasons:
             return {
@@ -306,6 +329,7 @@ class SystemModel:
             'power_pct': self.state['power_pct'],
             'backpressure_kpa': self.state['backpressure_kpa'],
             'egr_flow_at_idle': self.state['egr_flow_at_idle'],
+            'oil_pressure_psi': self.state['oil_pressure_psi'],
         }
 
     def step(self, dt: float = 0.01):
@@ -363,6 +387,15 @@ class SystemModel:
             return 0.0
         return float(strap.parameters['resistance_ohm']) * 150.0
 
+    def _terminal_drop(self) -> float:
+        """Voltage lost in the battery posts while the starter is drawing current."""
+        drop = 0.0
+        for component_id in ('battery_pos_terminal', 'battery_neg_terminal'):
+            terminal = self.get_component(component_id)
+            if terminal:
+                drop += float(terminal.parameters.get('resistance_ohm', 0.0)) * 150.0
+        return drop
+
     def _starter_control_voltage(self) -> float:
         battery = self.get_component('battery_12v')
         battery_v = float(battery.parameters['voltage_resting']) if battery else 0.0
@@ -382,6 +415,21 @@ class SystemModel:
             return round(battery_v * float(relay.parameters.get('contact_factor', 0.2)), 2)
         return battery_v
 
+    def _available_fuel_pressure(self) -> float:
+        """Rail pressure the pump can actually deliver through the filter and regulator."""
+        pump = self.get_component('fuel_pump')
+        pressure = float(pump.parameters['pressure_psi']) if pump else 0.0
+        fuel_filter = self.get_component('fuel_filter')
+        if fuel_filter and fuel_filter.parameters.get('clogged'):
+            pressure = min(pressure, float(fuel_filter.parameters.get('restricted_pressure_psi', 12.0)))
+        regulator = self.get_component('fuel_pressure_regulator')
+        mode = regulator.parameters.get('mode', 'normal') if regulator else 'normal'
+        if mode == 'low':
+            pressure = min(pressure, 20.0)
+        elif mode == 'high':
+            pressure = max(pressure, 78.0)
+        return pressure
+
     def _fuel_pressure(self) -> float:
         pump = self.get_component('fuel_pump')
         ignition = self.get_component('ignition_switch')
@@ -390,7 +438,7 @@ class SystemModel:
         powered = self.state['ignition_on'] or self.state['engine_cranking'] or self.state['engine_running']
         run_closed = True if not ignition else bool(ignition.parameters['run_circuit_closed'])
         if powered and run_closed:
-            return float(pump.parameters['pressure_psi'])
+            return self._available_fuel_pressure()
         return 0.0
 
     def _charging_voltage(self) -> float:
@@ -416,6 +464,18 @@ class SystemModel:
         level = float(radiator.parameters['coolant_level']) if radiator else 1.0
         if pump and pump.parameters.get('external_leak'):
             level = min(level, 0.4)
+        hose = self.get_component('coolant_hose')
+        if hose and hose.parameters.get('burst'):
+            level = min(level, 0.2)
+        heater = self.get_component('heater_core')
+        if heater and heater.parameters.get('leaking'):
+            level = min(level, 0.35)
+        gasket = self.get_component('head_gasket')
+        if gasket and gasket.parameters.get('breached'):
+            level = min(level, 0.45)
+        reservoir = self.get_component('coolant_reservoir')
+        if reservoir and reservoir.parameters.get('cracked'):
+            level = min(level, 0.4)
         return level
 
     def _fan_commanded(self, temp_c: float) -> bool:
@@ -429,6 +489,9 @@ class SystemModel:
         return temp_c + bias >= 90.0
 
     def _fan_on(self, temp_c: float) -> bool:
+        relay = self.get_component('fan_relay')
+        if relay and not relay.parameters.get('contacts_ok', True):
+            return False
         fan = self.get_component('cooling_fan')
         if not fan or not fan.parameters['operational'] or not fan.parameters['relay_ok']:
             return False
@@ -447,14 +510,34 @@ class SystemModel:
         stuck_open = bool(thermostat and thermostat.parameters['stuck_open'])
         clogged = bool(radiator and radiator.parameters['clogged'])
         if not pumping or stuck_closed:
-            return 118.0
-        if stuck_open and not clogged and self._coolant_level() >= 0.5:
-            return 60.0
-        if clogged or self._coolant_level() < 0.5:
-            return 112.0
-        if not self._fan_capable(100.0):
-            return 110.0
-        return 92.0
+            target = 118.0
+        elif stuck_open and not clogged and self._coolant_level() >= 0.5:
+            target = 60.0
+        elif clogged or self._coolant_level() < 0.5:
+            target = 112.0
+        elif not self._fan_capable(100.0):
+            target = 110.0
+        else:
+            target = 92.0
+        cap = self.get_component('radiator_cap')
+        if cap and not cap.parameters.get('holds_pressure', True) and target < 100.0:
+            target = 105.0
+        gasket = self.get_component('head_gasket')
+        if gasket and gasket.parameters.get('breached'):
+            return 116.0
+        return target
+
+    def _oil_pressure(self) -> float:
+        """Gallery pressure while the engine is running. Zero with the key off."""
+        if not self.state['engine_running']:
+            return 0.0
+        pump = self.get_component('oil_pump')
+        if pump and not pump.parameters.get('pumping', True):
+            return 0.0
+        pan = self.get_component('oil_pan')
+        if pan and float(pan.parameters.get('level', 1.0)) < 0.3:
+            return 5.0
+        return 40.0
 
     def _approach_temp(self, target: float, rate: float, dt: float):
         temp = float(self.state['coolant_temp_c'])
@@ -536,6 +619,38 @@ class SystemModel:
             quality = quality or 'high'
             reasons.append('PCV valve is stuck open')
 
+        vacuum = self.get_component('vacuum_hose')
+        if vacuum and vacuum.parameters.get('leak'):
+            actual_map += 16
+            rpm_add += 220
+            trim += 18
+            quality = 'high'
+            reasons.append('vacuum hose is leaking unmetered air')
+
+        iac = self.get_component('iac_valve')
+        iac_air = iac.parameters.get('idle_air', 'normal') if iac else 'normal'
+        if iac_air == 'high':
+            rpm_add += 200
+            quality = quality or 'high'
+            reasons.append('IAC valve is open at idle, and that air is still metered')
+        elif iac_air == 'low':
+            rpm_add -= 220
+            quality = 'low'
+            reasons.append('IAC valve is stuck closed')
+
+        purge = self.get_component('purge_valve')
+        if purge and purge.parameters.get('stuck_open'):
+            rpm_add += 90
+            trim += 10
+            quality = quality or 'high'
+            reasons.append('purge valve is stuck open')
+
+        regulator = self.get_component('fuel_pressure_regulator')
+        if regulator and regulator.parameters.get('mode') == 'high':
+            trim -= 15
+            quality = quality or 'rough'
+            reasons.append('fuel pressure regulator is stuck high')
+
         egr = self.get_component('egr_valve')
         egr_flow = bool(egr and egr.parameters['stuck_open'])
         if egr_flow:
@@ -599,6 +714,13 @@ class SystemModel:
         if inefficient:
             reasons.append('catalytic converter is not storing oxygen')
 
+        muffler = self.get_component('muffler')
+        if muffler and muffler.parameters.get('clogged'):
+            backpressure = max(backpressure, 24.0)
+            power -= 35
+            rpm_add -= 50
+            reasons.append('muffler is restricted')
+
         downstream = self.get_component('o2_sensor_downstream')
         downstream_stuck = bool(downstream and downstream.parameters['stuck'])
         if inefficient and not downstream_stuck:
@@ -641,6 +763,7 @@ class SystemModel:
         temp_c = float(self.state['coolant_temp_c'])
         self.state['fan_commanded'] = self._fan_commanded(temp_c)
         self.state['fan_on'] = self._fan_on(temp_c)
+        self.state['oil_pressure_psi'] = self._oil_pressure()
         mixture = self._mixture()
         for key in (
             'fuel_trim_pct',

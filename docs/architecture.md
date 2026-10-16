@@ -13,7 +13,8 @@ MyGarage is a game-like simulator where players practice car diagnosis and repai
 3. Combustion: a successful crank starts the engine only when the run circuit, crankshaft sensor, fuel pressure, and spark are good enough. A weak plug, coil, pump, or injector starts and then misfires.
 4. Cooling: coolant temperature approaches a target set by the thermostat, pump, radiator, fan, and the indicated temperature from the coolant sensor.
 5. Chassis: pad thickness, disc runout, wheel-speed codes, and shock bounce are diagnostic-only.
-6. Intake and exhaust: fuel trim, idle speed, MAF, MAP, both oxygen sensors, catalyst efficiency, EGR, and the PCV valve. Unmetered air (gasket, open PCV) raises trim. Metered extra air (dirty throttle) raises idle without that trim. A lying MAF disagrees with the MAP estimate.
+6. Intake and exhaust: fuel trim, idle speed, MAF, MAP, both oxygen sensors, catalyst efficiency, EGR, and the PCV valve. Unmetered air (gasket, open PCV, split vacuum hose) raises trim. Metered extra air (dirty throttle, open IAC) raises idle without that trim. A lying MAF disagrees with the MAP estimate. A stuck-open purge valve and a restricted muffler also move idle.
+7. Remaining catalog parts: `components/remaining.py` builds one component per catalog row that does not have its own module. Battery terminals and the flywheel change cranking. The timing belt, camshaft sensor, and spark plug wire prevent a start. A cracked distributor misfires. The fuel filter and regulator change rail pressure. The head gasket, hoses, reservoir, heater core, radiator cap, and fan relay change coolant temperature. The oil pump and oil pan change oil pressure. Drivetrain, brakes, steering, suspension, HVAC, and body electrical parts are diagnosed from their own readings.
 
 ## Core Principles
 

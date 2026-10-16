@@ -226,7 +226,7 @@ class FuelPump(CatalogPart):
                 measured = 0.0
                 note = 'Pump is not powered because the run circuit is open.'
             else:
-                measured = float(self.parameters['pressure_psi'])
+                measured = float(context.get('fuel_pressure_psi', self.parameters['pressure_psi']))
                 if measured < 15:
                     note = 'Pump is powered but pressure is too low to start.'
                 elif measured < 45:

@@ -216,6 +216,7 @@ pytest -v
 ### Documentation
 
 - **Architecture Overview**: See `docs/architecture.md` for detailed system design
+- **Parts Catalog**: See `docs/parts_catalog.md` for common car parts grouped by system
 - **Component API**: See `src/mygarage/component.py` for base class documentation
 - **Fault Catalog Format**: See `data/fault_catalog.yaml` for examples
 
@@ -447,6 +448,7 @@ pytest -v
 ### 文档
 
 - **架构概述**：详细系统设计请参阅 `docs/architecture.md`
+- **零件清单**：常见汽车零件按系统分组，见 `docs/parts_catalog.md`
 - **组件 API**：基类文档请参阅 `src/mygarage/component.py`
 - **故障目录格式**：示例请参阅 `data/fault_catalog.yaml`
 

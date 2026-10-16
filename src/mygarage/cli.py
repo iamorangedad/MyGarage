@@ -17,15 +17,68 @@ def print_menu():
     """Print diagnostic menu."""
     print("\nAvailable Actions:")
     print("  1. Visual inspection")
-    print("  2. Measure voltage (resting)")
-    print("  3. Measure voltage (while cranking)")
+    print("  2. Multimeter (key as it is)")
+    print("  3. Multimeter while cranking")
     print("  4. Battery load test")
-    print("  5. Crank test")
-    print("  6. Replace part")
-    print("  7. Submit diagnosis")
-    print("  9. Show components")
+    print("  5. Crank and try to start")
+    print("  6. OBD scan")
+    print("  7. Fuel pressure (turns key to RUN)")
+    print("  8. Temperature")
+    print("  9. Voltage drop while cranking")
+    print("  10. Spark test")
+    print("  11. Bounce test")
+    print("  12. Key off / key run")
+    print("  13. Replace part")
+    print("  14. Submit diagnosis")
+    print("  15. Show components")
+    print("  16. Service manual (fault names for a part)")
     print("  0. Quit")
     print()
+
+
+def format_readings(readings: dict) -> str:
+    """Render a tool payload without knowing which tool produced it."""
+    lines = []
+    for key, value in readings.items():
+        if isinstance(value, list):
+            lines.append(f"  {key}:")
+            for item in value:
+                lines.append(f"    - {item}")
+        else:
+            lines.append(f"  {key}: {value}")
+    return "\n".join(lines)
+
+
+def prompt_component(game: Game, label: str) -> str:
+    """Ask for a component id. An empty answer prints the catalog."""
+    comp = input(f"{label}: ").strip()
+    if not comp:
+        print_components(game)
+    return comp
+
+
+def print_components(game: Game):
+    """Print parts grouped by subsystem."""
+    grouped = {}
+    for comp in game.get_available_components():
+        grouped.setdefault(comp.get('subsystem') or 'other', []).append(comp)
+    print("\nComponents:")
+    for subsystem, parts in grouped.items():
+        print(f"  [{subsystem}]")
+        for comp in parts:
+            print(f"    {comp['id']}: {comp['name']}")
+
+
+def show_result(result: dict):
+    """Print a diagnostic result or its error."""
+    if 'error' in result and 'readings' not in result:
+        print(f"Error: {result['error']}")
+        return
+    readings = result.get('readings', {})
+    if isinstance(readings, dict) and 'error' in readings and len(readings) == 1:
+        print(f"Error: {readings['error']}")
+        return
+    print(format_readings(readings))
 
 
 def interactive_mode(game: Game):
@@ -49,107 +102,112 @@ def interactive_mode(game: Game):
         if choice == '0':
             print("Exiting without diagnosis...")
             break
-        
+
         elif choice == '1':
-            # Visual inspection
-            comp = input("Component to inspect (battery_12v/starter_motor): ").strip()
-            result = game.perform_diagnostic('visual', comp)
-            if 'error' in result:
-                print(f"Error: {result['error']}")
-            else:
-                print(f"\nVisual Inspection of {comp}:")
-                for finding in result['readings'].get('findings', []):
-                    print(f"  - {finding}")
-        
+            comp = prompt_component(game, "Component to inspect")
+            if comp:
+                print(f"\nVisual inspection of {comp}:")
+                show_result(game.perform_diagnostic('visual', comp))
+
         elif choice == '2':
-            # Voltage measurement (resting)
-            comp = input("Component (battery_12v): ").strip() or "battery_12v"
-            result = game.perform_diagnostic('multimeter', comp)
-            if 'error' in result:
-                print(f"Error: {result['error']}")
-            else:
-                readings = result['readings']
-                print(f"\nVoltage Measurement ({readings.get('test_condition')}):")
-                print(f"  {readings.get('voltage')} {readings.get('unit')}")
-        
+            comp = prompt_component(game, "Component to measure")
+            if comp:
+                print(f"\nMultimeter on {comp}:")
+                show_result(game.perform_diagnostic('multimeter', comp))
+
         elif choice == '3':
-            # Voltage measurement (cranking)
-            comp = input("Component (battery_12v): ").strip() or "battery_12v"
-            result = game.diagnostic_tools.measure_voltage(comp, cranking=True)
-            if 'error' in result:
-                print(f"Error: {result['error']}")
-            else:
-                readings = result['readings']
-                crank_info = result.get('crank_info', {})
-                print(f"\nVoltage Measurement (cranking):")
-                print(f"  {readings.get('voltage')} {readings.get('unit')}")
-                if crank_info:
-                    print(f"  Crank sound: {crank_info.get('sound')}")
-                    print(f"  RPM: {crank_info.get('rpm', 0)}")
-        
+            comp = prompt_component(game, "Component to measure while cranking")
+            if comp:
+                print(f"\nMultimeter on {comp} while cranking:")
+                show_result(game.diagnostic_tools.measure_voltage(comp, cranking=True))
+
         elif choice == '4':
-            # Load test
-            result = game.perform_diagnostic('load_test', 'battery_12v')
-            if 'error' in result:
-                print(f"Error: {result['error']}")
-            else:
-                readings = result['readings']
-                print(f"\nBattery Load Test:")
-                print(f"  Voltage before: {readings.get('voltage_before')} V")
-                print(f"  Voltage during load: {readings.get('voltage_during_load')} V")
-                print(f"  Voltage drop: {readings.get('voltage_drop')} V")
-                print(f"  Estimated CCA: {readings.get('estimated_cca')}")
-                print(f"  Result: {'PASS' if readings.get('passed') else 'FAIL'}")
-        
+            print("\nBattery load test:")
+            show_result(game.perform_diagnostic('load_test', 'battery_12v'))
+
         elif choice == '5':
-            # Crank test
-            result = game.perform_diagnostic('crank_test', 'starter_motor')
-            if 'error' in result:
-                print(f"Error: {result['error']}")
-            else:
-                readings = result['readings']
-                print(f"\nCrank Test:")
-                print(f"  Cranked: {readings.get('cranked')}")
-                print(f"  Sound: {readings.get('sound')}")
-                print(f"  Description: {readings.get('description')}")
-                if 'rpm' in readings:
-                    print(f"  RPM: {readings.get('rpm')}")
-        
+            print("\nCrank and start attempt:")
+            show_result(game.perform_diagnostic('crank_test', 'starter_motor'))
+
         elif choice == '6':
-            # Replace part
-            comp = input("Component to replace (battery_12v/starter_motor): ").strip()
-            result = game.replace_part(comp)
+            print("\nOBD scan:")
+            show_result(game.perform_diagnostic('obd', 'all'))
+
+        elif choice == '7':
+            game.set_ignition('run')
+            print("\nFuel pressure with the key in RUN:")
+            show_result(game.perform_diagnostic('fuel_pressure', 'fuel_pump'))
+
+        elif choice == '8':
+            comp = prompt_component(game, "Component (thermostat, ect_sensor, radiator, ...)")
+            if comp:
+                print(f"\nTemperature at {comp}:")
+                show_result(game.perform_diagnostic('temperature', comp))
+
+        elif choice == '9':
+            comp = input("Connection to measure [ground_strap]: ").strip() or "ground_strap"
+            print(f"\nVoltage drop across {comp}:")
+            show_result(game.diagnostic_tools.measure_voltage(comp, cranking=True))
+
+        elif choice == '10':
+            comp = prompt_component(game, "Component (ignition_coil or spark_plug)")
+            if comp:
+                print(f"\nSpark test on {comp}:")
+                show_result(game.perform_diagnostic('spark_test', comp))
+
+        elif choice == '11':
+            print("\nBounce test:")
+            show_result(game.perform_diagnostic('bounce_test', 'shock_absorber'))
+
+        elif choice == '12':
+            position = input("Position (off/run): ").strip() or "run"
+            result = game.set_ignition(position)
             if 'error' in result:
                 print(f"Error: {result['error']}")
             else:
-                print(f"\nReplaced {comp}")
-                print(f"Cost: ${result['cost']:.2f}")
-                print(f"Total parts replaced: {result['total_parts_replaced']}")
-        
-        elif choice == '7':
-            # Submit diagnosis
+                print(
+                    f"Key is {result['ignition_position']}. "
+                    f"Engine running: {result['engine_running']}. "
+                    f"Charging voltage: {result['charging_voltage']} V"
+                )
+
+        elif choice == '13':
+            comp = prompt_component(game, "Component to replace")
+            if comp:
+                result = game.replace_part(comp)
+                if 'error' in result:
+                    print(f"Error: {result['error']}")
+                else:
+                    print(f"\nReplaced {comp}")
+                    print(f"Cost: ${result['cost']:.2f}")
+                    print(f"Total parts replaced: {result['total_parts_replaced']}")
+
+        elif choice == '14':
             print("\nSubmit your diagnosis:")
             comp = input("Faulty component ID: ").strip()
             fault = input("Fault name: ").strip()
-            
             result = game.submit_diagnosis(comp, fault)
             if 'error' in result:
                 print(f"Error: {result['error']}")
             else:
                 print(result['score_summary'])
-                
-                # Show correct answer
-                diagnosis = result['diagnosis']
-                print(f"\n{diagnosis['message']}")
-                
+                print(f"\n{result['diagnosis']['message']}")
                 break
-        
-        elif choice == '9':
-            # Show components
-            print("\nAvailable Components:")
-            for comp in game.get_available_components():
-                print(f"  - {comp['id']}: {comp['name']} ({comp['type']})")
-        
+
+        elif choice == '15':
+            print_components(game)
+
+        elif choice == '16':
+            comp = prompt_component(game, "Component ID")
+            if comp:
+                manual = game.get_fault_modes(comp)
+                if 'error' in manual:
+                    print(f"Error: {manual['error']}")
+                else:
+                    print(f"\nKnown faults for {comp}:")
+                    for fault in manual['faults']:
+                        print(f"  - {fault['name']}: {fault['description']}")
+
         else:
             print("Invalid choice. Try again.")
     

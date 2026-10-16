@@ -9,6 +9,7 @@ class StarterMotor(Component):
     
     def __init__(self, component_id: str = "starter_motor"):
         super().__init__(component_id, "Starter Motor")
+        self.subsystem = "starting"
         self._mjcf_path = "starter_motor.xml"
         self.parameters = self.get_nominal_parameters()
         self._define_fault_modes()

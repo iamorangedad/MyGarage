@@ -7,7 +7,13 @@
 - **已实现**：当前代码里已有组件和故障
 - **规划**：清单里列出，尚未做成组件
 
-v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场景里的点火开关/搭铁/曲轴这些最小配套件。
+下面五批已经做成组件，并且写进了故障目录。表里标成「已实现」的都可以在游戏里测量、更换和提交诊断。其余仍是规划。
+
+1. 起动电路：搭铁带、点火开关、起动继电器、起动熔断丝、电磁开关（另有蓄电池和起动机）
+2. 充电：发电机、皮带、电压调节器
+3. 着车与缺火：火花塞、点火线圈、喷油器、燃油泵、曲轴位置传感器
+4. 过热：节温器、水泵、冷却风扇、水温传感器、散热器
+5. 制动与底盘：制动片、制动盘、轮速传感器、减振器
 
 ---
 
@@ -18,15 +24,15 @@ v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场�
 | 12V 蓄电池 | 12V battery | `battery_12v` | 已实现 | 提供起动和熄火时的电能 |
 | 蓄电池正极桩头 | Positive battery terminal | `battery_pos_terminal` | 规划 | 主电源连接点，腐蚀会增大压降 |
 | 蓄电池负极桩头 | Negative battery terminal | `battery_neg_terminal` | 规划 | 回路连接点 |
-| 发动机搭铁带 | Engine ground strap | `ground_strap` | 规划 | 发动机到车身的搭铁，松动会导致起动无力 |
+| 发动机搭铁带 | Engine ground strap | `ground_strap` | 已实现 | 发动机到车身的搭铁，松动会导致起动无力 |
 | 起动机 | Starter motor | `starter_motor` | 已实现 | 带动曲轴转动 |
-| 起动机电磁开关 | Starter solenoid | `starter_solenoid` | 规划 | 吸合驱动齿轮并接通大电流 |
-| 起动继电器 | Starter relay | `starter_relay` | 规划 | 用小电流控制起动机电路 |
-| 主熔断丝 / 起动熔断丝 | Main / starter fuse | `starter_fuse` | 规划 | 过流保护，熔断则完全无起动 |
-| 点火开关 | Ignition switch | `ignition_switch` | 规划 | ACC / ON / START 档位 |
-| 发电机（交流发电机） | Alternator | `alternator` | 规划 | 发动机运转时给蓄电池充电 |
-| 发电机皮带 | Alternator belt / serpentine belt | `serpentine_belt` | 规划 | 带动发电机、水泵等 |
-| 电压调节器 | Voltage regulator | `voltage_regulator` | 规划 | 把充电电压稳定在约 13.5–14.5 V |
+| 起动机电磁开关 | Starter solenoid | `starter_solenoid` | 已实现 | 吸合驱动齿轮并接通大电流 |
+| 起动继电器 | Starter relay | `starter_relay` | 已实现 | 用小电流控制起动机电路 |
+| 主熔断丝 / 起动熔断丝 | Main / starter fuse | `starter_fuse` | 已实现 | 过流保护，熔断则完全无起动 |
+| 点火开关 | Ignition switch | `ignition_switch` | 已实现 | ACC / ON / START 档位 |
+| 发电机（交流发电机） | Alternator | `alternator` | 已实现 | 发动机运转时给蓄电池充电 |
+| 发电机皮带 | Alternator belt / serpentine belt | `serpentine_belt` | 已实现 | 带动发电机、水泵等 |
+| 电压调节器 | Voltage regulator | `voltage_regulator` | 已实现 | 把充电电压稳定在约 13.5–14.5 V |
 
 ## 2. 发动机本体 / Engine
 
@@ -45,15 +51,15 @@ v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场�
 | 气门 | Valve | `valve` | 规划 | 控制进气和排气 |
 | 气门油封 | Valve stem seal | `valve_stem_seal` | 规划 | 防止机油进入燃烧室 |
 | 飞轮 | Flywheel | `flywheel` | 规划 | 储存转动惯量，与起动机啮合 |
-| 曲轴位置传感器 | Crankshaft position sensor (CKP) | `ckp_sensor` | 规划 | 告诉 ECU 转速和上止点 |
+| 曲轴位置传感器 | Crankshaft position sensor (CKP) | `ckp_sensor` | 已实现 | 告诉 ECU 转速和上止点 |
 | 凸轮轴位置传感器 | Camshaft position sensor (CMP) | `cmp_sensor` | 规划 | 判断哪一缸在做功 |
 
 ## 3. 点火系统 / Ignition
 
 | 中文 | English | 建议 ID | 状态 | 作用 |
 | --- | --- | --- | --- | --- |
-| 火花塞 | Spark plug | `spark_plug` | 规划 | 点燃混合气 |
-| 点火线圈 | Ignition coil | `ignition_coil` | 规划 | 把 12 V 升到点火高压 |
+| 火花塞 | Spark plug | `spark_plug` | 已实现 | 点燃混合气 |
+| 点火线圈 | Ignition coil | `ignition_coil` | 已实现 | 把 12 V 升到点火高压 |
 | 高压线 | Spark plug wire | `spark_plug_wire` | 规划 | 把高压送到火花塞（老车） |
 | 分电器 | Distributor | `distributor` | 规划 | 老式点火的分电与触发 |
 | 爆震传感器 | Knock sensor | `knock_sensor` | 规划 | 检测爆震，ECU 据此推迟点火 |
@@ -63,10 +69,10 @@ v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场�
 | 中文 | English | 建议 ID | 状态 | 作用 |
 | --- | --- | --- | --- | --- |
 | 燃油箱 | Fuel tank | `fuel_tank` | 规划 | 储存汽油 |
-| 燃油泵 | Fuel pump | `fuel_pump` | 规划 | 建立油轨压力 |
+| 燃油泵 | Fuel pump | `fuel_pump` | 已实现 | 建立油轨压力 |
 | 燃油滤清器 | Fuel filter | `fuel_filter` | 规划 | 过滤杂质 |
 | 燃油压力调节器 | Fuel pressure regulator | `fuel_pressure_regulator` | 规划 | 维持油轨压力 |
-| 喷油器 | Fuel injector | `fuel_injector` | 规划 | 按 ECU 指令喷油 |
+| 喷油器 | Fuel injector | `fuel_injector` | 已实现 | 按 ECU 指令喷油 |
 | 油轨 | Fuel rail | `fuel_rail` | 规划 | 向各缸喷油器供油 |
 | 油箱盖 | Fuel cap | `fuel_cap` | 规划 | 密封蒸发系统，松开会报蒸发故障 |
 | 活性炭罐 | EVAP canister | `evap_canister` | 规划 | 吸附燃油蒸气 |
@@ -97,13 +103,13 @@ v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场�
 
 | 中文 | English | 建议 ID | 状态 | 作用 |
 | --- | --- | --- | --- | --- |
-| 散热器 | Radiator | `radiator` | 规划 | 把冷却液热量散到空气 |
+| 散热器 | Radiator | `radiator` | 已实现 | 把冷却液热量散到空气 |
 | 散热器盖 | Radiator cap | `radiator_cap` | 规划 | 保持系统压力，提高沸点 |
-| 水泵 | Water pump | `water_pump` | 规划 | 循环冷却液 |
-| 节温器 | Thermostat | `thermostat` | 规划 | 控制大循环开启温度 |
-| 冷却风扇 | Cooling fan | `cooling_fan` | 规划 | 低速或怠速时强制散热 |
+| 水泵 | Water pump | `water_pump` | 已实现 | 循环冷却液 |
+| 节温器 | Thermostat | `thermostat` | 已实现 | 控制大循环开启温度 |
+| 冷却风扇 | Cooling fan | `cooling_fan` | 已实现 | 低速或怠速时强制散热 |
 | 风扇继电器 | Fan relay | `fan_relay` | 规划 | 控制风扇电机通断 |
-| 冷却液温度传感器 | Coolant temperature sensor (ECT) | `ect_sensor` | 规划 | 告诉 ECU 和仪表水温 |
+| 冷却液温度传感器 | Coolant temperature sensor (ECT) | `ect_sensor` | 已实现 | 告诉 ECU 和仪表水温 |
 | 膨胀水箱 | Coolant reservoir | `coolant_reservoir` | 规划 | 储存热胀冷缩的冷却液 |
 | 暖风水箱 | Heater core | `heater_core` | 规划 | 用冷却液给驾驶室加热 |
 | 冷却液软管 | Coolant hose | `coolant_hose` | 规划 | 连接散热器、发动机、暖风 |
@@ -146,13 +152,13 @@ v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场�
 | 制动液储液罐 | Brake fluid reservoir | `brake_fluid_reservoir` | 规划 | 储存制动液 |
 | 制动硬管 / 软管 | Brake line / hose | `brake_line` | 规划 | 传递液压 |
 | 制动钳 | Brake caliper | `brake_caliper` | 规划 | 夹紧制动盘 |
-| 制动片 | Brake pads | `brake_pads` | 规划 | 摩擦材料 |
-| 制动盘 | Brake disc / rotor | `brake_disc` | 规划 | 与制动片摩擦减速 |
+| 制动片 | Brake pads | `brake_pads` | 已实现 | 摩擦材料 |
+| 制动盘 | Brake disc / rotor | `brake_disc` | 已实现 | 与制动片摩擦减速 |
 | 制动鼓 | Brake drum | `brake_drum` | 规划 | 鼓式制动的旋转件 |
 | 制动蹄 | Brake shoes | `brake_shoes` | 规划 | 鼓式制动摩擦件 |
 | 轮缸 | Wheel cylinder | `wheel_cylinder` | 规划 | 鼓刹中把液压变成推力 |
 | ABS 控制模块 | ABS module | `abs_module` | 规划 | 防抱死控制 |
-| 轮速传感器 | Wheel speed sensor | `wheel_speed_sensor` | 规划 | 测量各轮转速，供 ABS/ESP |
+| 轮速传感器 | Wheel speed sensor | `wheel_speed_sensor` | 已实现 | 测量各轮转速，供 ABS/ESP |
 | 制动灯开关 | Brake light switch | `brake_switch` | 规划 | 点亮制动灯，并通知 ECU |
 
 ## 10. 转向系统 / Steering
@@ -171,7 +177,7 @@ v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场�
 
 | 中文 | English | 建议 ID | 状态 | 作用 |
 | --- | --- | --- | --- | --- |
-| 减振器 | Shock absorber | `shock_absorber` | 规划 | 衰减弹簧振动 |
+| 减振器 | Shock absorber | `shock_absorber` | 已实现 | 衰减弹簧振动 |
 | 螺旋弹簧 | Coil spring | `coil_spring` | 规划 | 承受车身重量 |
 | 控制臂 | Control arm | `control_arm` | 规划 | 定位车轮相对车身 |
 | 球头 | Ball joint | `ball_joint` | 规划 | 控制臂与转向节的活动连接 |
@@ -233,19 +239,8 @@ v0 已实现的只有起动电路：`battery_12v`、`starter_motor`，以及场�
 
 ---
 
-## 建议的实现顺序
+## 已按这个顺序实现
 
-诊断游戏里，零件最好按「能互相解释症状」的子系统一批批加，而不是一次做完全部几何。
+上面五批已经接进系统模型：起动电路决定能不能转起来，充电电压只在发动机运转后升高，燃油/点火/曲轴信号决定能不能着车，冷却零件决定水温往哪个平衡点走，制动和减振器只出现在各自的测量里。
 
-1. **起动电路补全**（紧接现有蓄电池和起动机）
-   - 搭铁带、点火开关、起动继电器、起动熔断丝、电磁开关
-2. **充电系统**
-   - 发电机、皮带、电压调节器
-3. **能着车之后的怠速/缺火**
-   - 火花塞、点火线圈、喷油器、燃油泵、曲轴位置传感器
-4. **过热**
-   - 节温器、水泵、冷却风扇、水温传感器、散热器
-5. **制动与底盘**
-   - 制动片、制动盘、轮速传感器、减振器
-
-每一批仍然遵循现有约定：新组件模块 + `data/fault_catalog.yaml` 里的故障条目，不改核心循环。
+再加零件仍然是：新组件模块 + `data/fault_catalog.yaml` 里的故障条目，并把它放进 `components/__init__.py` 的 `COMPONENT_CLASSES`。

@@ -91,3 +91,465 @@ faults:
       - "Sometimes starts, sometimes doesn't"
     difficulty: "hard"
     points: 180
+
+  # --- Starting circuit ---
+  - fault_id: "F008"
+    component_id: "ground_strap"
+    fault_name: "corroded_ground"
+    description: "Corroded engine ground strap drops voltage while cranking"
+    root_cause: "Oxidation at the ground strap lug"
+    symptoms:
+      - "Engine cranks slowly"
+      - "Lights dim while cranking"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F009"
+    component_id: "ground_strap"
+    fault_name: "loose_ground"
+    description: "Loose ground strap opens the starter return path under load"
+    root_cause: "Loose chassis ground fastener"
+    symptoms:
+      - "Click or grind, no real crank"
+      - "Lights go out when the key is turned to start"
+    difficulty: "hard"
+    points: 170
+
+  - fault_id: "F010"
+    component_id: "ignition_switch"
+    fault_name: "worn_start_contact"
+    description: "Ignition switch does not close the START circuit"
+    root_cause: "Worn START contact in the ignition switch"
+    symptoms:
+      - "No crank and no click"
+      - "Dash lights and accessories work"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F011"
+    component_id: "ignition_switch"
+    fault_name: "open_run_circuit"
+    description: "Ignition switch RUN circuit is open"
+    root_cause: "Open RUN contact in the ignition switch"
+    symptoms:
+      - "Engine cranks but will not start"
+      - "Fuel pump does not prime"
+    difficulty: "hard"
+    points: 160
+
+  - fault_id: "F012"
+    component_id: "starter_relay"
+    fault_name: "open_coil"
+    description: "Starter relay coil is open"
+    root_cause: "Open relay coil"
+    symptoms:
+      - "No crank"
+      - "No click from the relay"
+    difficulty: "medium"
+    points: 120
+
+  - fault_id: "F013"
+    component_id: "starter_relay"
+    fault_name: "burned_contacts"
+    description: "Starter relay clicks but the contacts do not pass current"
+    root_cause: "Burned starter relay contacts"
+    symptoms:
+      - "Relay clicks"
+      - "No crank"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F014"
+    component_id: "starter_fuse"
+    fault_name: "blown_fuse"
+    description: "Starter fuse is blown"
+    root_cause: "Open starter fuse element"
+    symptoms:
+      - "No crank and no click"
+      - "Other accessories still work"
+    difficulty: "easy"
+    points: 80
+
+  - fault_id: "F015"
+    component_id: "starter_solenoid"
+    fault_name: "open_pull_in_coil"
+    description: "Starter solenoid pull-in coil is open"
+    root_cause: "Open solenoid pull-in winding"
+    symptoms:
+      - "No crank"
+      - "No click"
+      - "Battery tests healthy"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F016"
+    component_id: "starter_solenoid"
+    fault_name: "burned_contacts"
+    description: "Starter solenoid clicks but does not feed the motor"
+    root_cause: "Burned high-current solenoid contacts"
+    symptoms:
+      - "Single click"
+      - "No crank"
+    difficulty: "medium"
+    points: 140
+
+  # --- Charging ---
+  - fault_id: "F017"
+    component_id: "alternator"
+    fault_name: "failed_diodes"
+    description: "Alternator rectifier diodes have failed"
+    root_cause: "Shorted or open rectifier diode"
+    symptoms:
+      - "Battery light stays on"
+      - "Battery voltage does not rise with the engine running"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F018"
+    component_id: "alternator"
+    fault_name: "open_output"
+    description: "Alternator output circuit is open"
+    root_cause: "Open alternator output"
+    symptoms:
+      - "No charge"
+      - "Battery light on"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F019"
+    component_id: "serpentine_belt"
+    fault_name: "broken_belt"
+    description: "Serpentine belt is broken"
+    root_cause: "Snapped drive belt"
+    symptoms:
+      - "Battery light on"
+      - "Charging voltage equals battery voltage"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F020"
+    component_id: "serpentine_belt"
+    fault_name: "glazed_belt"
+    description: "Serpentine belt slips"
+    root_cause: "Glazed belt ribs"
+    symptoms:
+      - "Chirp from the belt"
+      - "Charging voltage is marginal"
+    difficulty: "medium"
+    points: 120
+
+  - fault_id: "F021"
+    component_id: "voltage_regulator"
+    fault_name: "failed_high"
+    description: "Voltage regulator commands an excessive charge voltage"
+    root_cause: "Regulator failed high"
+    symptoms:
+      - "Voltage above 15 V with the engine running"
+      - "Bright lights and a hot battery"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F022"
+    component_id: "voltage_regulator"
+    fault_name: "failed_low"
+    description: "Voltage regulator does not command the alternator field"
+    root_cause: "Regulator failed low"
+    symptoms:
+      - "Battery light on"
+      - "Running voltage stays near battery voltage"
+    difficulty: "medium"
+    points: 140
+
+  # --- Combustion / no-start and misfire ---
+  - fault_id: "F023"
+    component_id: "spark_plug"
+    fault_name: "fouled_plug"
+    description: "Spark plug is carbon fouled"
+    root_cause: "Carbon-fouled spark plug"
+    symptoms:
+      - "Rough idle"
+      - "Misfire"
+    difficulty: "easy"
+    points: 100
+
+  - fault_id: "F024"
+    component_id: "spark_plug"
+    fault_name: "wide_gap"
+    description: "Spark plug gap is worn too wide"
+    root_cause: "Worn spark plug electrode"
+    symptoms:
+      - "Misfire under load"
+      - "Rough idle"
+    difficulty: "medium"
+    points: 110
+
+  - fault_id: "F025"
+    component_id: "ignition_coil"
+    fault_name: "open_primary"
+    description: "Ignition coil primary is open"
+    root_cause: "Open coil primary winding"
+    symptoms:
+      - "Cranks but will not start"
+      - "No spark"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F026"
+    component_id: "ignition_coil"
+    fault_name: "weak_spark"
+    description: "Ignition coil output is weak"
+    root_cause: "Degraded ignition coil"
+    symptoms:
+      - "Rough idle"
+      - "Misfire that is worse when hot"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F027"
+    component_id: "fuel_injector"
+    fault_name: "clogged_injector"
+    description: "Fuel injector is clogged"
+    root_cause: "Restricted injector nozzle"
+    symptoms:
+      - "Rough idle"
+      - "Single-cylinder misfire"
+      - "Fuel pressure is normal"
+    difficulty: "medium"
+    points: 150
+
+  - fault_id: "F028"
+    component_id: "fuel_injector"
+    fault_name: "leaking_injector"
+    description: "Fuel injector leaks when closed"
+    root_cause: "Injector pintle does not seal"
+    symptoms:
+      - "Hard start"
+      - "Fuel smell"
+      - "Rough idle"
+    difficulty: "medium"
+    points: 150
+
+  - fault_id: "F029"
+    component_id: "fuel_pump"
+    fault_name: "dead_pump"
+    description: "Fuel pump does not build pressure"
+    root_cause: "Failed fuel pump"
+    symptoms:
+      - "Cranks but will not start"
+      - "No fuel pump prime"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F030"
+    component_id: "fuel_pump"
+    fault_name: "weak_pump"
+    description: "Fuel pump pressure is below specification"
+    root_cause: "Worn fuel pump"
+    symptoms:
+      - "Long crank"
+      - "Rough idle"
+      - "Low rail pressure"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F031"
+    component_id: "ckp_sensor"
+    fault_name: "no_signal"
+    description: "Crankshaft position sensor produces no signal"
+    root_cause: "Open CKP sensor"
+    symptoms:
+      - "Cranks but will not start"
+      - "No spark and no injector pulse"
+    difficulty: "hard"
+    points: 160
+
+  - fault_id: "F032"
+    component_id: "ckp_sensor"
+    fault_name: "intermittent_signal"
+    description: "Crankshaft position signal drops out"
+    root_cause: "Intermittent CKP sensor or connector"
+    symptoms:
+      - "Engine starts then misfires"
+      - "Intermittent stall"
+    difficulty: "hard"
+    points: 170
+
+  # --- Cooling ---
+  - fault_id: "F033"
+    component_id: "thermostat"
+    fault_name: "stuck_closed"
+    description: "Thermostat is stuck closed"
+    root_cause: "Thermostat failed shut"
+    symptoms:
+      - "Engine overheats"
+      - "Heater still gets hot"
+    difficulty: "easy"
+    points: 100
+
+  - fault_id: "F034"
+    component_id: "thermostat"
+    fault_name: "stuck_open"
+    description: "Thermostat is stuck open"
+    root_cause: "Thermostat failed open"
+    symptoms:
+      - "Temperature gauge stays low"
+      - "Weak heater"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F035"
+    component_id: "water_pump"
+    fault_name: "failed_impeller"
+    description: "Water pump impeller does not circulate coolant"
+    root_cause: "Broken water pump impeller"
+    symptoms:
+      - "Rapid overheat"
+      - "Little flow in the radiator"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F036"
+    component_id: "water_pump"
+    fault_name: "leaking_pump"
+    description: "Water pump seal leaks coolant"
+    root_cause: "Failed water pump seal"
+    symptoms:
+      - "Coolant leak at the pump"
+      - "Overheats after the level drops"
+    difficulty: "easy"
+    points: 110
+
+  - fault_id: "F037"
+    component_id: "cooling_fan"
+    fault_name: "seized_motor"
+    description: "Cooling fan motor is seized"
+    root_cause: "Seized fan motor"
+    symptoms:
+      - "Overheats at idle"
+      - "Fan does not spin"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F038"
+    component_id: "cooling_fan"
+    fault_name: "failed_relay"
+    description: "Cooling fan relay does not close"
+    root_cause: "Failed fan relay"
+    symptoms:
+      - "Overheats at idle"
+      - "Fan motor is free but never receives power"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F039"
+    component_id: "ect_sensor"
+    fault_name: "biased_cold"
+    description: "Coolant temperature sensor reads much colder than the coolant is"
+    root_cause: "ECT sensor out of calibration"
+    symptoms:
+      - "Gauge reads low"
+      - "Fan never comes on"
+      - "Infrared reading of the housing is hot"
+    difficulty: "hard"
+    points: 170
+
+  - fault_id: "F040"
+    component_id: "ect_sensor"
+    fault_name: "open_circuit"
+    description: "Coolant temperature sensor circuit is open"
+    root_cause: "Open ECT circuit"
+    symptoms:
+      - "Gauge pegs cold"
+      - "Cooling fan does not run"
+    difficulty: "medium"
+    points: 140
+
+  - fault_id: "F041"
+    component_id: "radiator"
+    fault_name: "clogged_core"
+    description: "Radiator core is clogged"
+    root_cause: "Restricted radiator tubes"
+    symptoms:
+      - "Overheats"
+      - "Coolant level is still full"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F042"
+    component_id: "radiator"
+    fault_name: "leaking_radiator"
+    description: "Radiator tank is leaking"
+    root_cause: "Cracked radiator end tank"
+    symptoms:
+      - "Coolant puddle"
+      - "Low coolant"
+      - "Overheats"
+    difficulty: "easy"
+    points: 100
+
+  # --- Brakes and chassis ---
+  - fault_id: "F043"
+    component_id: "brake_pads"
+    fault_name: "worn_pads"
+    description: "Brake pads are worn out"
+    root_cause: "Worn brake friction material"
+    symptoms:
+      - "Squeal while braking"
+      - "Pad thickness below spec"
+    difficulty: "easy"
+    points: 80
+
+  - fault_id: "F044"
+    component_id: "brake_disc"
+    fault_name: "warped_disc"
+    description: "Brake disc runout is excessive"
+    root_cause: "Warped brake disc"
+    symptoms:
+      - "Steering wheel shakes while braking"
+      - "Pulsing brake pedal"
+    difficulty: "easy"
+    points: 90
+
+  - fault_id: "F045"
+    component_id: "wheel_speed_sensor"
+    fault_name: "open_sensor"
+    description: "Wheel speed sensor circuit is open"
+    root_cause: "Open wheel speed sensor"
+    symptoms:
+      - "ABS light on"
+      - "No signal from one wheel"
+    difficulty: "medium"
+    points: 120
+
+  - fault_id: "F046"
+    component_id: "wheel_speed_sensor"
+    fault_name: "debris_on_tone_ring"
+    description: "Debris on the tone ring breaks the wheel speed signal"
+    root_cause: "Metallic debris on the wheel speed sensor"
+    symptoms:
+      - "ABS light"
+      - "Erratic wheel speed"
+    difficulty: "medium"
+    points: 130
+
+  - fault_id: "F047"
+    component_id: "shock_absorber"
+    fault_name: "leaking_shock"
+    description: "Shock absorber is leaking oil"
+    root_cause: "Failed shock seal"
+    symptoms:
+      - "Oil on the shock body"
+      - "Corner bounces more than once"
+    difficulty: "easy"
+    points: 80
+
+  - fault_id: "F048"
+    component_id: "shock_absorber"
+    fault_name: "worn_shock"
+    description: "Shock absorber damping has faded"
+    root_cause: "Worn shock valving"
+    symptoms:
+      - "Several bounces after a bump"
+      - "Nose dive under braking"
+    difficulty: "easy"
+    points: 90

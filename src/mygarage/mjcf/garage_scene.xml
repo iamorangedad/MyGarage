@@ -56,6 +56,27 @@
           <geom name="starter_solenoid" type="box" size="0.04 0.04 0.06" pos="0 0 0.1" 
                 rgba="0.4 0.4 0.5 1"/>
         </body>
+
+        <!-- Ground strap, fuse, and ignition live in the engine bay as simple parts. -->
+        <body name="ground_strap_body" pos="-0.45 0.05 -0.05">
+          <geom name="ground_strap" type="capsule" size="0.01 0.12" rgba="0.15 0.15 0.15 1" euler="0 90 0"/>
+        </body>
+        <body name="fuse_box_body" pos="-0.55 0.35 0.05">
+          <geom name="fuse_box" type="box" size="0.06 0.04 0.03" rgba="0.1 0.1 0.1 1"/>
+        </body>
+        <body name="alternator_body" pos="-0.15 -0.28 0.05">
+          <geom name="alternator_case" type="cylinder" size="0.07 0.05" rgba="0.45 0.45 0.5 1"/>
+        </body>
+        <body name="radiator_body" pos="0.55 0 0.05">
+          <geom name="radiator_core" type="box" size="0.04 0.35 0.2" rgba="0.2 0.35 0.2 1"/>
+        </body>
+      </body>
+
+      <!-- One corner of the chassis: disc, caliper, and strut. -->
+      <body name="wheel_corner" pos="1.3 0.9 -0.15">
+        <geom name="brake_disc" type="cylinder" size="0.14 0.02" rgba="0.55 0.55 0.55 1" euler="90 0 0"/>
+        <geom name="brake_caliper" type="box" size="0.04 0.08 0.05" pos="0.1 0 0" rgba="0.3 0.3 0.3 1"/>
+        <geom name="shock_body" type="capsule" size="0.03 0.18" pos="0 0 0.25" rgba="0.2 0.2 0.2 1"/>
       </body>
     </body>
   </worldbody>

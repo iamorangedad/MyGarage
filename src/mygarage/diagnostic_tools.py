@@ -27,13 +27,52 @@ class DiagnosticTools:
         key = f"{tool_name}:{component_id}"
         self.tool_usage_count[key] = self.tool_usage_count.get(key, 0) + 1
         
+        context = self.system.get_context()
+        context.update(kwargs)
+
+        if tool_name == 'crank_test':
+            started = self.system.start_attempt()
+            readings = {
+                'cranked': bool(started.get('success')),
+                'started': bool(started.get('started')),
+                'sound': started.get('sound'),
+                'description': started.get('description'),
+                'rpm': started.get('idle_rpm', 0) if started.get('started') else started.get('rpm', 0),
+                'cranking_rpm': started.get('rpm', 0),
+                'idle_quality': started.get('idle_quality'),
+                'misfire': started.get('misfire', False),
+            }
+            return {
+                'tool': tool_name,
+                'component': component_id,
+                'readings': readings,
+                'timestamp': self._get_simulation_time(),
+            }
+
+        if tool_name == 'obd' and component_id in ('all', 'vehicle', 'obd'):
+            codes = []
+            for part in self.system.get_all_components():
+                part_reading = part.get_diagnostic_readings('obd', context)
+                for code in part_reading.get('dtcs', []) or []:
+                    codes.append({
+                        'code': code,
+                        'component': part.component_id,
+                        'description': part_reading.get('description'),
+                    })
+            return {
+                'tool': tool_name,
+                'component': component_id,
+                'readings': {
+                    'dtcs': codes,
+                    'note': 'No codes stored' if not codes else f'{len(codes)} code(s)',
+                },
+                'timestamp': self._get_simulation_time(),
+            }
+
         component = self.system.get_component(component_id)
         if not component:
             return {'error': f'Component {component_id} not found'}
-        
-        context = self.system.get_context()
-        context.update(kwargs)
-        
+
         try:
             readings = component.get_diagnostic_readings(tool_name, context)
             return {
@@ -88,7 +127,13 @@ class DiagnosticTools:
             'visual': 'Visual inspection - Look at component condition',
             'multimeter': 'Multimeter - Measure voltage, current, resistance',
             'load_test': 'Load test - Test component under load conditions',
-            'crank_test': 'Crank test - Attempt to crank engine and observe',
+            'crank_test': 'Crank and start - Hold the key in START, then release to RUN',
+            'obd': 'OBD scanner - Read stored diagnostic codes',
+            'fuel_pressure': 'Fuel pressure gauge - Rail pressure with the key in RUN',
+            'temperature': 'Temperature - Gauge, scanner, or infrared reading',
+            'voltage_drop': 'Voltage drop - Measure a connection while cranking',
+            'spark_test': 'Spark test - Coil output and plug condition',
+            'bounce_test': 'Bounce test - How many times the corner oscillates',
         }
     
     def get_usage_stats(self) -> Dict[str, int]:

@@ -80,6 +80,42 @@ class Component(ABC):
         """Return the cost to replace this component."""
         return self.parameters.get('replacement_cost', 0.0)
     
+    def unsupported_tool(self, tool: str) -> Dict[str, Any]:
+        """Standard response when a tool does not apply to this part."""
+        return {'error': f'Tool {tool} not supported for {self.name}'}
+
     def __repr__(self) -> str:
         fault_status = f"FAULTY ({self.active_fault.name})" if self.active_fault else "HEALTHY"
         return f"{self.__class__.__name__}(id={self.component_id}, status={fault_status})"
+
+
+class CatalogPart(Component):
+    """Component base that serves visual notes and OBD codes from parameters.
+
+    Fault entries replace ``visual_findings`` and ``active_dtcs`` the same way
+    they replace voltages or pressures. Subclasses add the tool readings that
+    are specific to the part.
+    """
+
+    subsystem = "general"
+
+    def __init__(self, component_id: str, name: str, mjcf_path: Optional[str] = None):
+        super().__init__(component_id, name)
+        self.subsystem = type(self).subsystem
+        self._mjcf_path = mjcf_path
+        self.parameters = self.get_nominal_parameters()
+        self._define_fault_modes()
+
+    @abstractmethod
+    def _define_fault_modes(self) -> None:
+        """Populate ``self.fault_modes``."""
+
+    def get_diagnostic_readings(self, tool: str, context: Dict[str, Any]) -> Dict[str, Any]:
+        if tool == 'visual':
+            return {'findings': list(self.parameters.get('visual_findings', []))}
+        if tool == 'obd':
+            return {
+                'dtcs': list(self.parameters.get('active_dtcs', [])),
+                'description': self.active_fault.description if self.active_fault else 'No stored fault',
+            }
+        return self.unsupported_tool(tool)

@@ -4,6 +4,16 @@
 
 MyGarage is a game-like simulator where players practice car diagnosis and repair in a virtual environment. The system uses MuJoCo for physics simulation and implements a modular, component-based architecture inspired by robotics simulation frameworks.
 
+## Implemented subsystems
+
+`components/__init__.py` lists every part the system model installs. The signal model in `system_model.py` couples them:
+
+1. Starting circuit: ground strap, ignition switch, starter relay, fuse, and solenoid, plus the original battery and starter.
+2. Charging: alternator output depends on the belt, the alternator, and the regulator setpoint, and only while the engine is running.
+3. Combustion: a successful crank starts the engine only when the run circuit, crankshaft sensor, fuel pressure, and spark are good enough. A weak plug, coil, pump, or injector starts and then misfires.
+4. Cooling: coolant temperature approaches a target set by the thermostat, pump, radiator, fan, and the indicated temperature from the coolant sensor.
+5. Chassis: pad thickness, disc runout, wheel-speed codes, and shock bounce are diagnostic-only.
+
 ## Core Principles
 
 1. **Modularity**: Each car part is a self-contained component with its own model, parameters, and fault modes

@@ -222,13 +222,13 @@ pytest -v
 
 ### Current Components
 
-#### Battery (12V)
-- **Faults**: Discharged, failed cell, corroded terminal
-- **Tools**: Visual inspection, multimeter, load test
+The playable car covers five subsystems. See `docs/parts_catalog.md` for the full list and which rows are implemented.
 
-#### Starter Motor
-- **Faults**: Failed solenoid, worn motor, failed motor, bad ground
-- **Tools**: Visual inspection, multimeter, crank test
+- **Starting**: battery, starter, ground strap, ignition switch, starter relay, starter fuse, solenoid
+- **Charging**: alternator, serpentine belt, voltage regulator
+- **Combustion**: spark plug, ignition coil, fuel injector, fuel pump, crankshaft position sensor
+- **Cooling**: thermostat, water pump, cooling fan, coolant temperature sensor, radiator
+- **Chassis**: brake pads, brake disc, wheel speed sensor, shock absorber
 
 ### License
 
@@ -454,13 +454,13 @@ pytest -v
 
 ### 当前组件
 
-#### 电池（12V）
-- **故障**：放电、电池单元失效、端子腐蚀
-- **工具**：目视检查、万用表、负载测试
+目前可以诊断的零件覆盖五个系统，完整对照见 `docs/parts_catalog.md`。
 
-#### 启动马达
-- **故障**：电磁开关失效、马达磨损、马达失效、接地不良
-- **工具**：目视检查、万用表、启动测试
+- **起动**：蓄电池、起动机、搭铁带、点火开关、起动继电器、起动熔断丝、电磁开关
+- **充电**：发电机、皮带、电压调节器
+- **燃烧**：火花塞、点火线圈、喷油器、燃油泵、曲轴位置传感器
+- **冷却**：节温器、水泵、冷却风扇、水温传感器、散热器
+- **底盘**：制动片、制动盘、轮速传感器、减振器
 
 ### 许可证
 

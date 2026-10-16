@@ -9,6 +9,7 @@ class Battery(Component):
     
     def __init__(self, component_id: str = "battery_12v"):
         super().__init__(component_id, "12V Battery")
+        self.subsystem = "starting"
         self._mjcf_path = "battery.xml"
         self.parameters = self.get_nominal_parameters()
         self._define_fault_modes()

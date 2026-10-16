@@ -167,7 +167,8 @@ class Game:
             {
                 'id': c.component_id,
                 'name': c.name,
-                'type': c.__class__.__name__
+                'type': c.__class__.__name__,
+                'subsystem': getattr(c, 'subsystem', ''),
             }
             for c in self.system_model.get_all_components()
         ]
@@ -175,10 +176,35 @@ class Game:
     def get_available_tools(self) -> Dict[str, str]:
         """Get list of available diagnostic tools."""
         return self.diagnostic_tools.get_available_tools()
-    
+
+    def get_fault_modes(self, component_id: str) -> Dict[str, Any]:
+        """List the fault names a component can have. This is the service manual."""
+        component = self.system_model.get_component(component_id)
+        if not component:
+            return {'error': f'Component {component_id} not found'}
+        return {
+            'component': component_id,
+            'faults': [
+                {'name': fault.name, 'description': fault.description}
+                for fault in component.fault_modes
+            ],
+        }
+
+    def set_ignition(self, position: str) -> Dict[str, Any]:
+        """Turn the key to off or run without cranking."""
+        if not self.active_scenario:
+            return {'error': 'No active scenario'}
+        self.system_model.set_ignition(position)
+        return {
+            'ignition_position': position,
+            'engine_running': self.system_model.state['engine_running'],
+            'charging_voltage': self.system_model.state['charging_voltage'],
+        }
+
     def step_simulation(self, nsteps: int = 1):
         """Step the MuJoCo simulation forward."""
         if self.simulation and self.simulation.is_loaded():
+            self.simulation.set_actuator('starter_motor', self.system_model.starter_torque_command())
             self.simulation.step(nsteps)
             self.system_model.step(dt=0.01 * nsteps)
     
